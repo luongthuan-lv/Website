@@ -26,30 +26,36 @@
                 <div class="panel-heading" style="color: #fff; background: #e74c3c">Nguyễn Duy Thái - Ph09550 - <b>SIGN
                         UP</b></div>
                 <div class="panel-body">
-                    <div class="alert alert-danger">Tài khoản không hợp lệ !</div>
-                    <form role="form" method="post">
+                    <% if(errors != ""){ %>
+                    <% errors.forEach(element => {%>
+                    <div class="alert alert-danger"><%- element %> </div>
+                    <%   }); %>
+
+                    <% } %>
+
+                    <form role="form" method="post" action="/register">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Họ Và Tên" name="hoten" type="text" autofocus>
+                                <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Mật khẩu" name="pass" type="password" value="">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Nhập Lại Mật khẩu" name="pass2" type="password"
+                                <input class="form-control" placeholder="Mật khẩu" name="password" type="password"
                                     value="">
                             </div>
                             <div class="form-group">
-                                &nbsp;<label class="radio-inline"><input type="radio" name="gender" value="male" checked required> Nam</label>&nbsp;
-                                &nbsp;<label class="radio-inline"><input type="radio" name="gender" value="female" required> Nữ</label>&nbsp;
+                                <input class="form-control" placeholder="Nhập Lại Mật khẩu" name="re_password"
+                                    type="password" value="">
+                            </div>
+                            <div class="form-group">
+                                &nbsp;<label class="radio-inline"><input type="radio" name="gender" value="male"
+                                        required> Nam</label>&nbsp;
+                                &nbsp;<label class="radio-inline"><input type="radio" name="gender" value="female"
+                                        required> Nữ</label>&nbsp;
                             </div>
 
-                            <button type="submit" class="btn btn-primary"><a href="login.html" style="color:#fff">Đăng Kí</a></button>
+                            <button type="submit" class="btn btn-primary">Đăng Kí</button>
                             <br><br>
-                            <p>Bạn đã có tài khoản? <a href="/signin" style="">Đăng Nhập Ngay</a></p>
+                            <p>Bạn đã có tài khoản? <a href="/signin">Đăng Nhập Ngay</a></p>
                         </fieldset>
                     </form>
                 </div>
