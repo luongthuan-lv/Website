@@ -30,8 +30,13 @@ let UserSchema = new Schema({
     deletedAt: {type: Number, default: null}
 })
 UserSchema.statics = {
+    // create 1 user
     createNew(item){
         return this.create(item)
+    },
+    // check email user already exist
+    findByEmail(email){
+        return this.findOne({"local.email" : email}).exec()
     }
 }
 module.exports = mongoose.model("user", UserSchema)
