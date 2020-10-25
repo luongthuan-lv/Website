@@ -1,13 +1,15 @@
 const { validationResult } = require("express-validator/check")
-const {registerService} = require("./../../services/index")
+const { registerService } = require("./../../services/index")
 let getSignUp = (req, res) => {
-    return res.render('admin/login-register/signUp',{
-        errors: req.flash("errors")
+    return res.render('admin/login-register/signUp', {
+        errors: req.flash("errors"),
+        success: req.flash("success")
     })
 }
 
-let postRegister = (req, res) => {
+let postRegister = async (req, res) => {
     let errorArr = []
+    let successArr = []
     let validationErrors = validationResult(req)
     if (!validationErrors.isEmpty()) {
         let errors = Object.values(validationErrors.mapped())
@@ -17,7 +19,17 @@ let postRegister = (req, res) => {
         req.flash("errors", errorArr)
         return res.redirect("/signup")
     }
-    registerService.register(req.body.email, req.body.password, req.body.gender)
+    try {
+        let createUser =  await registerService.register(req.body.email, req.body.password, req.body.gender)
+        successArr.push(createUser)
+        req.flash("success", successArr)
+        return res.redirect("/signup")
+    } catch (error) {
+        errorArr.push(error)
+        req.flash("errors", errorArr)
+        return res.redirect("/signup")
+    }
+   
 }
 
 module.exports = {
