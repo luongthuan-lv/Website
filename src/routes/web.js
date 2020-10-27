@@ -12,6 +12,7 @@ let initRouter = (app) => {
     // SignUp-Register
     router.get('/signup', SignUp.getSignUp)
     router.post('/register', registerValidation.register ,SignUp.postRegister)
+    router.get('/verify/:token', SignUp.verifyAccount)
     return app.use('/', router)
 }
 
