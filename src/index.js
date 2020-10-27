@@ -4,7 +4,10 @@ const configViewEngine = require("./config/viewEngine")
 const bodyParser = require("body-parser")
 const configSession = require("./config/session")
 const connectFlash = require("connect-flash")
-
+const passport = require("passport")
+// passport thi giua flash va initroutes
+// session thi phai duoi connectDB
+// flash giua bodyparser va initroutes
 
 const express = require('express')
 const app = express()
@@ -20,6 +23,9 @@ configViewEngine(app)
 app.use(bodyParser.urlencoded({ extended: true }))
 //connect flash
 app.use(connectFlash())
+//passport
+app.use(passport.initialize())
+app.use(passport.session())
 // routes
 initRoute(app)
 

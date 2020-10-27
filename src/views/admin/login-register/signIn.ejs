@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vietpro Mobile Shop - Administrator</title>
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link href="/css/font-awesome.min.css" rel="stylesheet">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/datepicker3.css" rel="stylesheet">
 <link href="css/bootstrap-table.css" rel="stylesheet">
@@ -14,7 +15,32 @@
 <script src="js/html5shiv.js"></script>
 <script src="js/respond.min.js"></script>
 <![endif]-->
-
+<style>
+	.social{
+		text-align: center;
+	}
+#google_login{
+	background:#ff0000;
+	color: #fff;
+	padding: 1.3rem 5.5rem;
+	margin: 1rem;
+	font-size: 2rem;
+	border-radius: 10px;
+}
+#google_login:hover{
+	background: #191970;
+}
+#facebook_login{
+	background: dodgerblue;
+	color: #fff;
+	padding: 1.3rem 5.5rem;
+	font-size: 2rem;
+	border-radius: 10px;
+}
+#facebook_login:hover{
+	background:#191970;
+}
+</style>
 </head>
 
 <body>
@@ -24,26 +50,32 @@
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading" style="background: #3498db;color: #fff;">Nguyễn Duy Thái - Ph09550 - <b>ĐĂNG NHẬP</b></div>
 				<div class="panel-body">
+				<br>
+					
+						<div class="social">
+								<a id="google_login" class="circle google" href="/signin/google" title="Đăng nhập bằng tài khoản Google">
+								<i class="fa fa-google-plus fa-fw"></i>
+								</a>
+								<a id="facebook_login" class="circle facebook" href="/signin/facebook" title="Đăng nhập bằng tài khoản Facebook">
+								<i class="fa fa-facebook fa-fw"></i>
+								</a>
+							</div>
+						
+						<br>
+					
 					<div class="form-group">
 						<label>
-							Đăng nhập nhanh với
-							<i class="fab fa-facebook"></i>
-							<i class="fab fa-google"></i>
-						</label>
-					</div>
-					<div class="form-group">
-						<label>
-							Hoặc đăng nhập với
+							Hoặc đăng nhập với:
 						
 						</label>
 					</div>
-					<form role="form" method="post">
+					<form role="form" method="post" action="/signin">
 						<fieldset>
 							<div class="form-group">
-								<input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus>
+								<input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
 							</div>
 							<div class="form-group">
-								<input class="form-control" placeholder="Mật khẩu" name="pass" type="password" value="">
+								<input class="form-control" placeholder="Mật khẩu" name="password" type="password" value="">
 							</div>
 							<div class="checkbox">
 								<label>

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const bcryt = require("bcrypt")
 
 let Schema = mongoose.Schema
 
@@ -48,7 +49,16 @@ UserSchema.statics = {
             {"local.verifyToken": token},
             {"local.isActive": true, "local.verifyToken": null}
         )
+    },
+    // tim theo id
+    findUserById(id) {
+        return this.findById(id).exec()
     }
 
+}
+UserSchema.methods = {
+    comparePassword(password){
+        return bcryt.compare(password, this.local.password)
+    }
 }
 module.exports = mongoose.model("user", UserSchema)
