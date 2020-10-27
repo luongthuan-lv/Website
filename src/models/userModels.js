@@ -37,6 +37,18 @@ UserSchema.statics = {
     // check email user already exist
     findByEmail(email){
         return this.findOne({"local.email" : email}).exec()
+    },
+    // xóa tài khoản theo cái id
+    removeById(id){
+        return this.findByIdAndRemove(id).exec()
+    },
+    // token
+    verify(token){
+        return this.findOneAndUpdate(
+            {"local.verifyToken": token},
+            {"local.isActive": true, "local.verifyToken": null}
+        )
     }
+
 }
 module.exports = mongoose.model("user", UserSchema)

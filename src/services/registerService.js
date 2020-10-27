@@ -1,10 +1,11 @@
 const UserModel = require("./../models/userModels")
-const { Registererrors, Registersuccess } = require("./../../lang/vi")
+const { Registererrors, Registersuccess, Registermailer } = require("./../../lang/vi")
+const sendMail = require("./../config/mailer")
 const bcrypt = require("bcrypt")
 const uuidv4 = require("uuid/v4")
 
 let saltRound = 7
-let register = (email, password, gender) => {
+let register = (email, password, gender, protocol, host) => {
     return new Promise(async (resolve, reject) => {
         // kiểm tra xem email tạo đã tồn tại hay chưa
         let userByEmail = await UserModel.findByEmail(email)
@@ -32,10 +33,31 @@ let register = (email, password, gender) => {
             }
         }
         let user = await UserModel.createNew(userItem)
-        resolve(Registersuccess.userCreated(user.local.email))
+
+        // send email to active account
+        let linkVerify = `${protocol}://${host}/verify/${user.local.verifyToken}`
+        sendMail(email, Registermailer.subject, Registermailer.template(linkVerify))
+            .then(success => {
+                resolve(Registersuccess.userCreated(user.local.email))
+            })
+            .catch( async (error) => {
+                // xóa hết thông tin người dùng để khi người dùng clink lại không bị báo các
+                // lôi ở bên trên
+                await UserModel.removeById(user._id)
+                console.log(error)
+                reject(Registermailer.send_faild)
+            })
+       
     })
 
 }
+let verifyAccount = (token) => {
+    return new Promise( async (resolve,reject) => {
+        await UserModel.verify(token)
+        resolve(Registersuccess.account_actived)
+    })  
+}
 module.exports = {
-    register: register
+    register: register,
+    verifyAccount: verifyAccount
 }

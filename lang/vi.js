@@ -11,9 +11,23 @@ const Registersuccess = {
     userCreated: (useremail) => {
         return `Tài khoản <strong>${useremail}</strong> đã đăng kí nhưng chưa kích hoạt, vui lòng kiểm tra email mà bạn đã đăng kí!`
     },
-    account_actived: "Kích hoạt tài khoản thành công, Bạn có thể đăng nhập"
+    account_actived: "Kích hoạt tài khoản thành công, Bạn có thể đăng nhập",
+}
+const Registermailer = {
+    subject: "NguyenDuyThai: Xác nhận thông tin tài khoản của bạn !",
+    template: (linkVerify) => {
+        return`
+            <h2>Bạn nhận được Email này vì muốn đăng kí tài khoản quản trị.</h2>
+            <h3>Vui lòng Click vào liên kết bên dưới để kích hoạt tài khoản:</h3>
+            <h3><a href="${linkVerify}" target="blank" >${linkVerify}</a></h3>
+            <h1>Xin chân thành cảm ơn!</h1>
+        `
+    },
+    send_faild: "Có lối trong quá trình gửi email, vui lòng xem lại tất cả các thông tin!"
+
 }
 module.exports = {
     Registererrors: Registererrors,
-    Registersuccess: Registersuccess
+    Registersuccess: Registersuccess,
+    Registermailer: Registermailer
 }
