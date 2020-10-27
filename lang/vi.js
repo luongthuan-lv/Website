@@ -26,8 +26,17 @@ const Registermailer = {
     send_faild: "Có lối trong quá trình gửi email, vui lòng xem lại tất cả các thông tin!"
 
 }
+const transPassport = {
+    server_error: "Có lỗi ở phía Server, Vui lòng đăng nhập hoặc trở lại sau, cảm ơn.",
+    login_failed: "Tài khoản hoặc mật khẩu không chính xác, hãy kiểm tra lại!",
+    account_not_active: "Tài khoản này đã được đăng kí nhưng chưa được ACTIVE, kiểm tra email của bạn",
+    login_success: (username) => {
+        return `Xin chào ${username}, Chúc bạn một ngày tốt lành!`
+    }
+}
 module.exports = {
     Registererrors: Registererrors,
     Registersuccess: Registersuccess,
-    Registermailer: Registermailer
+    Registermailer: Registermailer,
+    transPassport:transPassport
 }
