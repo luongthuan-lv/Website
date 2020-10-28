@@ -12,6 +12,7 @@ const Registersuccess = {
         return `Tài khoản <strong>${useremail}</strong> đã đăng kí nhưng chưa kích hoạt, vui lòng kiểm tra email mà bạn đã đăng kí!`
     },
     account_actived: "Kích hoạt tài khoản thành công, Bạn có thể đăng nhập",
+    logout_success: "Đăng xuất tài khoản thành công!"
 }
 const Registermailer = {
     subject: "NguyenDuyThai: Xác nhận thông tin tài khoản của bạn !",
