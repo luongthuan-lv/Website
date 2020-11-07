@@ -35,9 +35,16 @@ const transPassport = {
         return `Xin chào ${username}, Chúc bạn một ngày tốt lành!`
     }
 }
+
+///////////
+const transUser = {
+    deleteSuccess : "Xóa tài khoản thành công!",
+    email_in_use: "Email này đã tồn tại trong một tài khoản khác !"
+}
 module.exports = {
     Registererrors: Registererrors,
     Registersuccess: Registersuccess,
     Registermailer: Registermailer,
-    transPassport:transPassport
+    transPassport:transPassport,
+    transUser:transUser
 }
