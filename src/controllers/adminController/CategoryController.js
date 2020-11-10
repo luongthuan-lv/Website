@@ -1,0 +1,85 @@
+const CategoryModel = require("./../../models/categoryModel")
+const { transCategory } = require("./../../../lang/vi")
+const multer = require("multer")
+const uuid = require("uuid/v4")
+const fs = require("fs-extra")
+let getCategory = async (req, res) => {
+    const Cate = await CategoryModel.listAll()
+    cate = JSON.parse(JSON.stringify(Cate))
+    return res.render('admin/category/category', {
+        success: req.flash("success"),
+        errors: req.flash("errors"),
+        data: { cate: cate }
+    })
+}
+let getRemoveCategory = async (req, res) => {
+    const id = req.params.id
+    await CategoryModel.removeById({ _id: id })
+    req.flash("success", transCategory.deleteSuccess)
+    res.redirect('/category')
+}
+let getAddCategory = (req, res) => {
+    res.render("admin/category/add_category", {
+        success: req.flash("success"),
+        errors: req.flash("errors"),
+    })
+}
+
+let storage = multer.diskStorage({
+    destination: (req, res, callback) => {
+        const dir = "./src/public/images/category"
+        callback(null, dir)
+    },
+    filename: (req, file, callback) => {
+        let math = ["image/png", "image/jpeg", "image/jpg"]
+        if (math.indexOf(file.mimetype) === -1) {
+            return callback(transCategory.avatar_type, null)
+        }
+        let filename = `${Date.now()}-image-${file.originalname}`;
+        callback(null, filename);
+    }
+})
+let avatarUploadFile = multer({
+    storage: storage
+}).single("avatar")
+
+
+let postAddCategory = (req, res) => {
+    avatarUploadFile(req, res, async (error) => {
+        if (req.body.cate_name == "") {
+            req.flash("errors", transCategory.cate_not_empty)
+            res.redirect("/category/add")
+        } else if (error) {
+            req.flash("errors", transCategory.avatar_type)
+            res.redirect("/category/add")
+        } else {
+            try {
+
+                let item = {
+                    cate_name: req.body.cate_name,
+                    avatar: req.file.filename
+                }
+
+                await CategoryModel.createNew(item)
+                // update moi dung thoi
+                //fs.remove(`./src/public/images/category/${req.file.filename}`)
+                req.flash("success", transCategory.createSuccess)
+                res.redirect('/category')
+
+            } catch (error) {
+                req.flash("errors", transCategory.cate_avatar_not_empty)
+                res.redirect("/category/add")
+            }
+        }
+
+
+
+    })
+}
+
+module.exports = {
+    getCategory: getCategory,
+    getRemoveCategory: getRemoveCategory,
+    getAddCategory: getAddCategory,
+    postAddCategory: postAddCategory
+}
