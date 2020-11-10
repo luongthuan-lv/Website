@@ -41,10 +41,30 @@ const transUser = {
     deleteSuccess : "Xóa tài khoản thành công!",
     email_in_use: "Email này đã tồn tại trong một tài khoản khác !"
 }
+const transCategory = {
+    deleteSuccess : "Xóa danh mục thành công!",
+    cate_not_empty: "Không được thêm danh mục trống!",
+    cate_avatar_not_empty: "Avatar danh mục không được bỏ trống",
+    avatar_type: "Định dạng ảnh bao gồm JPG-PNG-JPEG",
+    createSuccess: "Tạo danh mục thành công"
+}
+const transLanguage = {
+    deleteSuccess : "Xóa ngôn ngữ thành công!",
+    lang_not_empty: "Không được thêm ngôn ngữ trống!",
+    createSuccess: "Tạo ngôn ngữ thành công"
+}
+const transTour = {
+    deleteSuccess : "Xóa ngôn ngữ thành công!",
+    lang_not_empty: "Không được thêm ngôn ngữ trống!",
+    createSuccess: "Tạo ngôn ngữ thành công"
+}
 module.exports = {
     Registererrors: Registererrors,
     Registersuccess: Registersuccess,
     Registermailer: Registermailer,
     transPassport:transPassport,
-    transUser:transUser
+    transUser:transUser,
+    transCategory: transCategory,
+    transLanguage: transLanguage,
+    transTour: transTour
 }
