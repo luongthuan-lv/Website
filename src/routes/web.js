@@ -1,4 +1,4 @@
-const {SignIn, SignUp, dashboard, logout, User, Cate, Lang, Tour} = require("./../controllers/adminController/index")
+const {SignIn, SignUp, dashboard, logout, User, Cate, Lang, Tour, Gallery} = require("./../controllers/adminController/index")
 const {registerValidation} = require("./../validation/index")
 const initPassportLocal = require("./../controllers/passportController/local")
 const passport = require("passport")
@@ -44,6 +44,10 @@ let initRouter = (app) => {
     //------------------Tour-------------------
     router.get('/tour', Tour.getTour)
     router.get('/tour/remove/:id', Tour.getRemoveTour)
+    router.get('/tour/add', Tour.getAddTour)
+    router.post('/tour/add/post', Tour.postAddTour)
+    //---------------Gallery----------------
+    router.get('/gallery', Gallery.getGallery)
 
 
     return app.use('/', router)

@@ -54,9 +54,15 @@ const transLanguage = {
     createSuccess: "Tạo ngôn ngữ thành công"
 }
 const transTour = {
-    deleteSuccess : "Xóa ngôn ngữ thành công!",
-    lang_not_empty: "Không được thêm ngôn ngữ trống!",
-    createSuccess: "Tạo ngôn ngữ thành công"
+    avatar_type: "Định dạng ảnh bao gồm JPG-PNG-JPEG",
+    deleteSuccess : "Xóa tour thành công!",
+    createSuccess: "Tạo tour thành công",
+    router_not_empty: "Router còn để trống, làm ơn kiểm tra lại",
+    place_not_empty: "Place còn để trống, làm ơn kiểm tra lại",
+    lon_not_empty: "Longitude còn để trống, làm ơn kiểm tra lại",
+    lat_not_empty: "Latitude còn để trống, làm ơn kiểm tra lại",
+    info_not_empty: "Infomation còn để trống, làm ơn kiểm tra lại",
+    tour_avatar_not_empty: "Avatar tour không được bỏ trống"
 }
 module.exports = {
     Registererrors: Registererrors,

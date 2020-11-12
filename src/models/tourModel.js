@@ -10,21 +10,21 @@ const TourSchema = new Schema({
         lat: { type: String, default: null }
     },
     information: { type: String, default: null },
-    avatar: { type: String, default: null },
+    avatar: [{ type: String, default: null }],
     lang_id: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'language'
     },
     cate_id: {
-        type:  mongoose.Schema.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'category'
     },
     createdAt: { type: Number, default: Date.now },
     updatedAt: { type: Number, default: null },
 }, {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-  })
+        toJSON: { virtuals: true },
+        //toObject: { virtuals: true }
+    })
 TourSchema.virtual("categories", {
     ref: "category",
     localField: "cate_id",
