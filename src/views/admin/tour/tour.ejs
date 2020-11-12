@@ -41,7 +41,7 @@
                                 <th data-field="price" data-sortable="true" style="text-align: center">Place</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Longitude</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Latitude</th>
-                                <th data-field="price" data-sortable="true" style="text-align: center">Infomation</th>
+                              
                                 <th data-field="price" data-sortable="true" style="text-align: center">Avatar</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Language</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Category</th>
@@ -56,8 +56,8 @@
                                 <td style="text-align: center"><%=item.place  %> </td>
                                 <td style="text-align: center"><%=item.location.lon  %> </td>
                                 <td style="text-align: center"><%=item.location.lat  %> </td>
-                                <td style="text-align: center"><%=item.information  %> </td>
-                                <td style="text-align: center"><img src="images/category/<%=item.avatar%>"
+                               
+                                <td style="text-align: center"><img src="images/tour/<%=item.avatar%>"
                                         alt="" height="100" width="100"></td>
                                 </span></td>
                                 <% item.languages.forEach(i => { %>
@@ -67,6 +67,7 @@
                                 <% item.categories.forEach(i => { %>
                                     <td style="text-align: center"><%=i.cate_name  %> </td>
                                 <% }) %> 
+                                
                                 <td class="form-group" style="text-align: center">
                                     <a href="/tour/edit/<%=item._id %> " class="btn btn-primary"><i
                                             class="glyphicon glyphicon-pencil"></i></a>
