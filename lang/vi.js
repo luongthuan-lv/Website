@@ -64,6 +64,12 @@ const transTour = {
     info_not_empty: "Infomation còn để trống, làm ơn kiểm tra lại",
     tour_avatar_not_empty: "Avatar tour không được bỏ trống"
 }
+const transGallery = {
+    avatar_type: "Định dạng ảnh bao gồm JPG-PNG-JPEG",
+    deleteSuccess : "Xóa ảnh thành công!",
+    createSuccess: "Tạo ảnh thành công",
+    tour_avatar_not_empty: "Avatar tour không được bỏ trống"
+}
 module.exports = {
     Registererrors: Registererrors,
     Registersuccess: Registersuccess,
@@ -72,5 +78,6 @@ module.exports = {
     transUser:transUser,
     transCategory: transCategory,
     transLanguage: transLanguage,
-    transTour: transTour
+    transTour: transTour,
+    transGallery:transGallery
 }

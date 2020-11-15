@@ -48,7 +48,10 @@ let initRouter = (app) => {
     router.post('/tour/add/post', Tour.postAddTour)
     //---------------Gallery----------------
     router.get('/gallery', Gallery.getGallery)
-
+    router.get('/gallery/remove/:id', Gallery.getRemoveGallery)
+    router.get('/gallery/add', Gallery.getAddGallery)
+    router.post('/gallery/add/post', Gallery.postAddTour)
+ 
 
     return app.use('/', router)
 }
