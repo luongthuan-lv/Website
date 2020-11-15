@@ -45,5 +45,8 @@ TourSchema.statics = {
     removeById(id) {
         return this.findByIdAndRemove(id).exec()
     },
+    countItem(){
+        return this.countDocuments({}).exec()
+    }
 }
 module.exports = mongoose.model("tour", TourSchema)
