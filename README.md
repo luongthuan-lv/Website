@@ -13,3 +13,5 @@ NodeJs-Website
         const t = /[$&+,:;=?@#|]/
         // kiem tra khong duoc chua ki tu trang
         const ktt = /\S/
+        // dua ve dang Object 
+        match(/^[0-9a-fA-F]{24}$/)
