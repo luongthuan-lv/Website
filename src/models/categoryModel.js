@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 
 const CategoryModel = new Schema({
     cate_name: String,
+    router: String,
     avatar: { type: String, default: null },
     created_at: { type: Number, default: Date.now },
     deleted_at: { type: Number, default: null }
