@@ -6,7 +6,7 @@ const UserController = require("./userController")
 const CategoryController  = require('./CategoryController')
 const LanguageController = require("./LanguageController")
 const TourController = require("./TourController")
-const GalleryController = require("./GalleryController")
+
 
 const SignIn = SignInController
 const SignUp = signUpController
@@ -16,7 +16,7 @@ const User = UserController
 const Cate = CategoryController
 const Lang = LanguageController
 const Tour = TourController
-const Gallery = GalleryController
+
 
 module.exports = {
     SignIn: SignIn,
@@ -26,6 +26,5 @@ module.exports = {
     User: User,
     Cate: Cate,
     Lang: Lang,
-    Tour: Tour,
-    Gallery: Gallery
+    Tour: Tour
 }

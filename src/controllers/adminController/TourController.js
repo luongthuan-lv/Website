@@ -46,7 +46,7 @@ let storage = multer.diskStorage({
 })
 let avatarUploadFile = multer({
     storage: storage
-}).single("avatar")
+}).array("avatar", 17)
 let postAddTour = async (req, res) => {
 
     avatarUploadFile(req, res, async (error) => {
@@ -71,14 +71,14 @@ let postAddTour = async (req, res) => {
         } else {
             // try {
             let item = {
-                router: req.body.router,
+               
                 place: req.body.place,
                 location: {
                     lon: req.body.lon,
                     lat: req.body.lat
                 },
                 information: req.body.information,
-                avatar: req.file.filename,
+                avatar:  req.files,
                 lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
                 cate_id: (req.body.cate_id).match(/^[0-9a-fA-F]{24}$/)
             }

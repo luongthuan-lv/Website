@@ -49,6 +49,9 @@ let postAddCategory = (req, res) => {
         if (req.body.cate_name == "") {
             req.flash("errors", transCategory.cate_not_empty)
             res.redirect("/category/add")
+        }else if(req.body.router == ""){
+            req.flash("errors", transCategory.router_not_empty)
+            res.redirect("/category/add")
         } else if (error) {
             req.flash("errors", transCategory.avatar_type)
             res.redirect("/category/add")
@@ -57,6 +60,7 @@ let postAddCategory = (req, res) => {
 
                 let item = {
                     cate_name: req.body.cate_name,
+                    router: req.body.router,
                     avatar: req.file.filename
                 }
 

@@ -3,14 +3,15 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const TourSchema = new Schema({
-    router: { type: String, default: null },
     place: { type: String, default: null },
     location: {
         lon: { type: String, default: null },
         lat: { type: String, default: null }
     },
     information: { type: String, default: null },
-    avatar: [{ type: String, default: null }],
+    avatar: {
+        type: Array, default: null
+    },
     lang_id: {
         type: mongoose.Types.ObjectId,
         ref: 'language'

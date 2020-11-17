@@ -44,6 +44,7 @@ const transUser = {
 const transCategory = {
     deleteSuccess : "Xóa danh mục thành công!",
     cate_not_empty: "Không được thêm danh mục trống!",
+    router_not_empty: "Không được thêm router trống!",
     cate_avatar_not_empty: "Avatar danh mục không được bỏ trống",
     avatar_type: "Định dạng ảnh bao gồm JPG-PNG-JPEG",
     createSuccess: "Tạo danh mục thành công"
