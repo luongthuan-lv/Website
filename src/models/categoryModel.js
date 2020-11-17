@@ -6,15 +6,27 @@ const CategoryModel = new Schema({
     cate_name: String,
     router: String,
     avatar: { type: String, default: null },
+    lang_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'language'
+    },
     created_at: { type: Number, default: Date.now },
     deleted_at: { type: Number, default: null }
+}, {
+    toJSON: { virtuals: true },
+    //toObject: { virtuals: true }
+})
+CategoryModel.virtual("languages", {
+    ref: "language",
+    localField: "lang_id",
+    foreignField: "_id"
 })
 CategoryModel.statics = {
     createNew(item){
         return this.create(item)
     },
     listAll() {
-        return this.find()
+        return this.find().populate("languages").exec()
     },
     removeById(id){
         return this.findByIdAndRemove(id).exec()

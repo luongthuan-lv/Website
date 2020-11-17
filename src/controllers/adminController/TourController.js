@@ -78,7 +78,7 @@ let postAddTour = async (req, res) => {
                     lat: req.body.lat
                 },
                 information: req.body.information,
-                avatar:  req.files,
+                avatar: req.files,
                 lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
                 cate_id: (req.body.cate_id).match(/^[0-9a-fA-F]{24}$/)
             }

@@ -1,6 +1,7 @@
 const CategoryModel = require("./../../models/categoryModel")
 const { transCategory } = require("./../../../lang/vi")
 const multer = require("multer")
+const LanguageModel = require("./../../models/languageModel")
 const uuid = require("uuid/v4")
 const fs = require("fs-extra")
 let getCategory = async (req, res) => {
@@ -9,7 +10,7 @@ let getCategory = async (req, res) => {
     return res.render('admin/category/category', {
         success: req.flash("success"),
         errors: req.flash("errors"),
-        data: { cate: cate }
+        cate: cate
     })
 }
 let getRemoveCategory = async (req, res) => {
@@ -18,10 +19,13 @@ let getRemoveCategory = async (req, res) => {
     req.flash("success", transCategory.deleteSuccess)
     res.redirect('/category')
 }
-let getAddCategory = (req, res) => {
+let getAddCategory = async (req, res) => {
+    let lang = await LanguageModel.listAll()
+    la = JSON.parse(JSON.stringify(lang))
     res.render("admin/category/add_category", {
         success: req.flash("success"),
         errors: req.flash("errors"),
+        la:la
     })
 }
 
@@ -61,7 +65,8 @@ let postAddCategory = (req, res) => {
                 let item = {
                     cate_name: req.body.cate_name,
                     router: req.body.router,
-                    avatar: req.file.filename
+                    avatar: req.file.filename,
+                    lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
                 }
 
                 await CategoryModel.createNew(item)

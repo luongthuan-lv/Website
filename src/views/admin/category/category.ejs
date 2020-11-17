@@ -28,7 +28,7 @@
                 <div class="panel-body">
                     <% if(success != null){ %>
                     <% success.forEach(element => { %>
-                        <div class="alert alert-success"><%= element %> </div>
+                    <div class="alert alert-success"><%= element %> </div>
                     <%   }); %>
                     <%  %>
                     <% } %>
@@ -39,26 +39,34 @@
                                 <th data-field="id" data-sortable="true" style="text-align: center">ID</th>
                                 <th data-field="name" data-sortable="true" style="text-align: center">Tên danh mục</th>
                                 <th data-field="name" data-sortable="true" style="text-align: center">Tên router</th>
+                                <th data-field="name" data-sortable="true" style="text-align: center">Tên Language</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Ảnh đại diện</th>
                                 <th style="text-align: center">Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% for(x in data.cate){ %>
-                                <tr>
-                                    <td style="text-align: center"><%=data.cate[x]._id %> </td>
-                                    <td style="text-align: center"><%=data.cate[x].cate_name  %> </td>
-                                    <td style="text-align: center"><%=data.cate[x].router  %> </td>
-                                    <td style="text-align: center"><img src="images/category/<%=data.cate[x].avatar%>" alt="" height="100" width="100"></td>
-                                        </span></td>
-                                    <td class="form-group" style="text-align: center">
-                                        <a href="/category/edit/<%=data.cate[x]._id %> " class="btn btn-primary"><i
-                                                class="glyphicon glyphicon-pencil"></i></a>
-                                        <a href="/category/remove/<%=data.cate[x]._id %> " class="btn btn-danger" onclick="return alert('Bạn có muốn xóa không!')"><i
-                                                class="glyphicon glyphicon-remove"></i></a>
-                                    </td>
-                                </tr>
-                                <% } %>
+                            <% cate.forEach(item => { %>
+                            <tr>
+                                <td style="text-align: center"><%=item._id %> </td>
+                                <td style="text-align: center"><%=item.cate_name  %> </td>
+                                <td style="text-align: center"><%=item.router  %> </td>
+                                <% item.languages.forEach(i => { %>
+                                <td style="text-align: center"><%=i.lang_name  %> </td>
+                                <% }) %>
+                                <td style="text-align: center"><img src="images/category/<%=item.avatar%>"
+                                        alt="" height="100" width="100"></td>
+                                </span></td>
+                                <td class="form-group" style="text-align: center">
+                                    <a href="/category/edit/<%=item._id %> " class="btn btn-primary"><i
+                                            class="glyphicon glyphicon-pencil"></i></a>
+                                    <a href="/category/remove/<%=item._id %> " class="btn btn-danger"
+                                        onclick="return alert('Bạn có muốn xóa không!')"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </td>
+                            </tr>
+                            <%}) %>
+
+
                         </tbody>
                     </table>
                 </div>
