@@ -53,8 +53,8 @@
                                 <% item.languages.forEach(i => { %>
                                 <td style="text-align: center"><%=i.lang_name  %> </td>
                                 <% }) %>
-                                <td style="text-align: center"><img src="images/category/<%=item.avatar%>"
-                                        alt="" height="100" width="100"></td>
+                                <td style="text-align: center"><img src="images/category/<%=item.avatar%>" alt=""
+                                        height="100" width="100"></td>
                                 </span></td>
                                 <td class="form-group" style="text-align: center">
                                     <a href="/category/edit/<%=item._id %> " class="btn btn-primary"><i
@@ -73,11 +73,13 @@
                 <div class="panel-footer">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                            <li class="page-item"><a class="page-link"
+                                    href="/category/?page=<%=data.pagePrev%>">&laquo;</a></li>
+                            <%for(var i = 1; i <= data.totalPage; i++) {%>
+                            <li class="page-item"><a class="page-link" href="/category/?page=<%=i%>"><%=i%></a></li>
+                            <%}%>
+                            <li class="page-item"><a class="page-link" href="/category/?page=<%=data.pageNext%>">&raquo;</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
