@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/indexboss.js"
+    "start": "node indexboss.js"
   },
   "repository": {
     "type": "git",

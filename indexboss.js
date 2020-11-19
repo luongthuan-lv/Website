@@ -1,8 +1,8 @@
-const ConnectDB = require("./config/connectDB")
-const initRoute = require("./routes/web")
-const configViewEngine = require("./config/viewEngine")
+const ConnectDB = require("./src/config/connectDB")
+const initRoute = require("./src/routes/web")
+const configViewEngine = require("./src/config/viewEngine")
 const bodyParser = require("body-parser")
-const configSession = require("./config/session")
+const configSession = require("./src/config/session")
 const connectFlash = require("connect-flash")
 const passport = require("passport")
 // passport thi giua flash va initroutes
