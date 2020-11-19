@@ -26,7 +26,7 @@ CategoryModel.statics = {
         return this.create(item)
     },
     listAll() {
-        return this.find().populate("languages").exec()
+        return this.find().limit(7).populate("languages").exec()
     },
     removeById(id){
         return this.findByIdAndRemove(id).exec()

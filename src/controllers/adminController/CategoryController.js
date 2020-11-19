@@ -5,12 +5,43 @@ const LanguageModel = require("./../../models/languageModel")
 const uuid = require("uuid/v4")
 const fs = require("fs-extra")
 let getCategory = async (req, res) => {
-    const Cate = await CategoryModel.listAll()
+    if (req.query.page) {
+        var page = parseInt(req.query.page)
+    } else {
+         page = 1
+    }
+    if(req.query.page == 0) {
+        page = 1
+    }
+    const perpage = 10
+    const start = (page - 1) * perpage
+    //const end = page * perpage
+
+    const totalRows = await CategoryModel.find()
+    const totalPage = Math.ceil(totalRows.length / perpage)
+
+    let pagePrev, pageNext
+    if (page <= 1) {
+        pagePrev = 1
+    } else {
+        pagePrev = page - 1
+    }
+    if(page >= totalPage){
+        pageNext = totalPage
+    }else{
+        pageNext = page + 1
+    }
+
+    
+
+    let Cate = await CategoryModel.find().skip(start).limit(perpage).populate("languages").exec()
     cate = JSON.parse(JSON.stringify(Cate))
     return res.render('admin/category/category', {
         success: req.flash("success"),
         errors: req.flash("errors"),
-        cate: cate
+        cate: cate,
+        data: {pageNext: pageNext,pagePrev:pagePrev,totalPage:totalPage}
+    
     })
 }
 let getRemoveCategory = async (req, res) => {
