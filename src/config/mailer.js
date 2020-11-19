@@ -1,27 +1,27 @@
 const nodeMailer = require("nodemailer")
 
-let adminEmail = process.env.MAIL_USER
-let adminPassword = process.env.MAIL_PASSWORD
-let mailHost = process.env.MAIL_HOST
-let mailPort = process.env.MAIL_PORT
+// let adminEmail = thuanlvph08370@gmail.com
+// let adminPassword = Lt05122000.
+// let mailHost = "smtp.gmail.com"
+// let mailPort = "587"
 
 let sendMail = (to, subject, htmlContent) => {
     let transporter = nodeMailer.createTransport({
-        host: mailHost,
-        port: mailPort,
+        host: "smtp.gmail.com",
+        port: 587,
         secure: false, // use HTTPS,..=>
         requireTLS:true,
         tls: {
             rejectUnauthorized:false
         },
         auth: {
-            user: adminEmail,
-            pass: adminPassword
+            user: "nguyenduythai16012000@gmail.com",
+            pass: "nguyenthai2k"
         }
     })
 
     let options = {
-        from: adminEmail,
+        from: "nguyenduythai16012000@gmail.com",
         to: to,
         subject: subject,
         html: htmlContent

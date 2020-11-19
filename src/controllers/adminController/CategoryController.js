@@ -1,5 +1,5 @@
 const CategoryModel = require("./../../models/categoryModel")
-const { transCategory } = require("./../../../lang/vi")
+const {transCategory} = require("./../../../lang/vi")
 const multer = require("multer")
 const LanguageModel = require("./../../models/languageModel")
 const uuid = require("uuid/v4")
@@ -15,7 +15,7 @@ let getCategory = async (req, res) => {
 }
 let getRemoveCategory = async (req, res) => {
     const id = req.params.id
-    await CategoryModel.removeById({ _id: id })
+    await CategoryModel.removeById({_id: id})
     req.flash("success", transCategory.deleteSuccess)
     res.redirect('/category')
 }
@@ -25,7 +25,7 @@ let getAddCategory = async (req, res) => {
     res.render("admin/category/add_category", {
         success: req.flash("success"),
         errors: req.flash("errors"),
-        la:la
+        la: la
     })
 }
 
@@ -40,6 +40,8 @@ let storage = multer.diskStorage({
             return callback(transCategory.avatar_type, null)
         }
         let filename = `${Date.now()}-image-${file.originalname}`;
+        // var pathss = '/images/category' + filename;
+        // console.log(pathss);
         callback(null, filename);
     }
 })
@@ -53,7 +55,7 @@ let postAddCategory = (req, res) => {
         if (req.body.cate_name == "") {
             req.flash("errors", transCategory.cate_not_empty)
             res.redirect("/category/add")
-        }else if(req.body.router == ""){
+        } else if (req.body.router == "") {
             req.flash("errors", transCategory.router_not_empty)
             res.redirect("/category/add")
         } else if (error) {
@@ -61,11 +63,11 @@ let postAddCategory = (req, res) => {
             res.redirect("/category/add")
         } else {
             try {
-
+                var pathss = '/images/category/' + req.file.filename;
                 let item = {
                     cate_name: req.body.cate_name,
                     router: req.body.router,
-                    avatar: req.file.filename,
+                    avatar: pathss,
                     lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
                 }
 
@@ -82,9 +84,9 @@ let postAddCategory = (req, res) => {
         }
 
 
-
     })
 }
+
 
 module.exports = {
     getCategory: getCategory,
