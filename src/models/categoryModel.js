@@ -33,6 +33,12 @@ CategoryModel.statics = {
     },
     countItem(){
         return this.countDocuments({}).exec()
+    },
+    findItemById(id){
+        return this.findById(id).populate("languages").exec()
+    },
+    updateItem(id,item){
+        return this.findByIdAndUpdate(id,item).populate("languages").exec()
     }
 }
 

@@ -36,6 +36,8 @@ let initRouter = (app) => {
     router.get('/category/remove/:id', logout.checkLoggedIn, Cate.getRemoveCategory)
     router.get('/category/add', logout.checkLoggedIn, Cate.getAddCategory)
     router.post('/category/add/post', logout.checkLoggedIn, Cate.postAddCategory)
+    router.get('/category/edit/:id', logout.checkLoggedIn, Cate.getEditCategory)
+    router.post('/category/edit/:id', logout.checkLoggedIn, Cate.postEditCategory)
     // ------------------Language---------------
     router.get('/language', logout.checkLoggedIn, Lang.getLanguage)
     router.get('/language/remove/:id', logout.checkLoggedIn, Lang.getRemoveLanguage)

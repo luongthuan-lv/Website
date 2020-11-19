@@ -1,0 +1,74 @@
+<%- include('../header') %>
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#"><svg class="glyph stroked home">
+                        <use xlink:href="#stroked-home"></use>
+                    </svg></a></li>
+            <li><a href="">Quản lý danh mục</a></li>
+            <li class="active">Sửa danh mục</li>
+        </ol>
+    </div>
+    <!--/.row-->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Sửa danh mục</h1>
+        </div>
+    </div>
+    <!--/.row-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-md-8">
+                        <% if(errors != null){ %>
+                        <% errors.forEach(element => { %>
+                        <div class="alert alert-danger"><%= element %> </div>
+                        <%   }); %>
+                        <%  %>
+                        <% } %>
+                        <form role="form" method="post" enctype="multipart/form-data" ">
+                            <div class="form-group">
+                                <label>Tên danh mục:</label>
+                                <input type="text" name="cate_name" value="<%=item.cate_name  %> " class="form-control" placeholder="Tên danh mục...">
+                            </div>
+                            <div class="form-group">
+                                <label>Tên router:</label>
+                                <input type="text" name="router" value="<%=item.router  %> " class="form-control" placeholder="Tên danh mục...">
+                            </div>
+                            <div class="form-group">
+                                <label>Language:</label>
+                                <select name="lang_id" class="form-control">
+                                    <% la.forEach(i => { %>
+                                    <option <% if(i._id == item.lang_id) { %> selected <% } %> 
+                                         value="<%= i._id  %>" ><%= i.lang_name  %> </option>
+                                    <%}) %> 
+                                </select>
+                            </div> 
+                            <div class="form-group">
+                                <label>Ảnh danh mục</label>
+                                <input type="file" onchange="loadFile(event)" name="avatar">
+                                <br>
+                                <img id="output" height="200" width="200" src="images/category/<%=item.avatar %> " />
+                                <script>
+                                    var loadFile = function (event) {
+                                        var output = document.getElementById('output');
+                                        output.src = URL.createObjectURL(event.target.files[0]);
+                                        output.onload = function () {
+                                            URL.revokeObjectURL(output.src) // free memory
+                                        }
+                                    };
+                                </script>
+                            </div>
+
+                            <button type="submit" name="sbm" class="btn btn-success">Thêm mới</button>
+                            <button type="reset" class="btn btn-default">Làm mới</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div><!-- /.col-->
+        </div>
+        <!--/.main-->
+        <%- include('../footer') %>
