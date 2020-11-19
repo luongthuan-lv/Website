@@ -5,12 +5,15 @@ const LanguageModel = require("./../../models/languageModel")
 const uuid = require("uuid/v4")
 const fs = require("fs-extra")
 let getCategory = async (req, res) => {
+    // let Cate = await CategoryModel.find().populate("languages").where({lang_id:'5fb29dcf5fea350ad4f00734'})
+    // cate = JSON.parse(JSON.stringify(Cate))
+    // console.log(cate)
     if (req.query.page) {
         var page = parseInt(req.query.page)
     } else {
-         page = 1
+        page = 1
     }
-    if(req.query.page == 0) {
+    if (req.query.page == 0) {
         page = 1
     }
     const perpage = 10
@@ -26,13 +29,11 @@ let getCategory = async (req, res) => {
     } else {
         pagePrev = page - 1
     }
-    if(page >= totalPage){
+    if (page >= totalPage) {
         pageNext = totalPage
-    }else{
+    } else {
         pageNext = page + 1
     }
-
-    
 
     let Cate = await CategoryModel.find().skip(start).limit(perpage).populate("languages").exec()
     cate = JSON.parse(JSON.stringify(Cate))
@@ -40,8 +41,8 @@ let getCategory = async (req, res) => {
         success: req.flash("success"),
         errors: req.flash("errors"),
         cate: cate,
-        data: {pageNext: pageNext,pagePrev:pagePrev,totalPage:totalPage}
-    
+        data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage }
+
     })
 }
 let getRemoveCategory = async (req, res) => {
@@ -117,9 +118,66 @@ let postAddCategory = (req, res) => {
     })
 }
 
+let getEditCategory = async (req, res) => {
+    let id = req.params.id
+    let lang = await LanguageModel.listAll()
+    la = JSON.parse(JSON.stringify(lang))
+    let item = await CategoryModel.findItemById({ _id: id })
+    item = JSON.parse(JSON.stringify(item))
+    return res.render("admin/category/edit_category", {
+        success: req.flash("success"),
+        errors: req.flash("errors"),
+        item: item,
+        la: la
+    })
+}
+let postEditCategory = (req, res) => {
+
+    avatarUploadFile(req, res, async (error) => {
+        let id = req.params.id
+        if (req.body.cate_name == "") {
+            req.flash("errors", transCategory.cate_not_empty)
+            res.redirect(`/category/edit/${id}`)
+        } else if (req.body.router == "") {
+            req.flash("errors", transCategory.router_not_empty)
+            res.redirect(`/category/edit/${id}`)
+        } else if (error) {
+            req.flash("errors", transCategory.avatar_type)
+            res.redirect(`/category/edit/${id}`)
+        } else {
+            try {
+                const id = req.params.id
+                let item = {
+                    cate_name: req.body.cate_name,
+                    router: req.body.router,
+                    avatar: req.file.filename,
+                    lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
+                }
+
+                await CategoryModel.updateItem(id, item)
+                // update moi dung thoi
+                //fs.remove(`./src/public/images/category/${req.file.filename}`)
+                req.flash("success", "Edit thành công")
+                res.redirect('/category')
+
+            } catch (error) {
+                req.flash("errors", transCategory.cate_avatar_not_empty)
+                res.redirect(`/category/edit/${id}`)
+            }
+        }
+
+
+
+    })
+
+}
+
+
 module.exports = {
     getCategory: getCategory,
     getRemoveCategory: getRemoveCategory,
     getAddCategory: getAddCategory,
-    postAddCategory: postAddCategory
+    postAddCategory: postAddCategory,
+    getEditCategory: getEditCategory,
+    postEditCategory: postEditCategory
 }
