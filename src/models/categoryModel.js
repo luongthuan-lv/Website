@@ -36,4 +36,5 @@ CategoryModel.statics = {
     }
 }
 
+
 module.exports = mongoose.model("category", CategoryModel)
