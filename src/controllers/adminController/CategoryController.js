@@ -32,15 +32,24 @@ let getCategory = async (req, res) => {
         pageNext = page + 1
     }
 
-    
-
     let Cate = await CategoryModel.find().skip(start).limit(perpage).populate("languages").exec()
     cate = JSON.parse(JSON.stringify(Cate))
+
+      // search theo key=language
+    if (req.query.key) {
+        let x = await LanguageModel.findOne().where({ lang_name: req.query.key }).exec()
+        x = JSON.parse(JSON.stringify(x))
+
+        var item = await CategoryModel.find().populate("languages").where({lang_id:x._id})
+        list = JSON.parse(JSON.stringify(item))
+    }
     return res.render('admin/category/category', {
         success: req.flash("success"),
         errors: req.flash("errors"),
         cate: cate,
-        data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage }
+        data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage },
+        la: la,
+        list: list
 
     })
 }
