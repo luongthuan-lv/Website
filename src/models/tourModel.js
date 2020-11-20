@@ -3,12 +3,12 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const TourSchema = new Schema({
-    place: { type: String, default: null },
+    place: {type: String, default: null},
     location: {
-        lon: { type: String, default: null },
-        lat: { type: String, default: null }
+        lon: {type: String, default: null},
+        lat: {type: String, default: null}
     },
-    information: { type: String, default: null },
+    information: {type: String, default: null},
     avatar: {
         type: Array, default: null
     },
@@ -20,12 +20,12 @@ const TourSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: 'category'
     },
-    createdAt: { type: Number, default: Date.now },
-    updatedAt: { type: Number, default: null },
+    createdAt: {type: Number, default: Date.now},
+    updatedAt: {type: Number, default: null},
 }, {
-        toJSON: { virtuals: true },
-        //toObject: { virtuals: true }
-    })
+    toJSON: {virtuals: true},
+    //toObject: { virtuals: true }
+})
 TourSchema.virtual("categories", {
     ref: "category",
     localField: "cate_id",
@@ -46,7 +46,7 @@ TourSchema.statics = {
     removeById(id) {
         return this.findByIdAndRemove(id).exec()
     },
-    countItem(){
+    countItem() {
         return this.countDocuments({}).exec()
     }
 }
