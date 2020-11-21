@@ -2,17 +2,13 @@ const CategoryModel = require("./../../models/categoryModel")
 const {transCategory} = require("./../../../lang/vi")
 const multer = require("multer")
 const LanguageModel = require("./../../models/languageModel")
-const uuid = require("uuid/v4")
-const fs = require("fs-extra")
 let getCategory = async (req, res) => {
     if (req.query.page) {
         var page = parseInt(req.query.page)
     } else {
-        page = 1
+        pageNext = page + 1
     }
-    if (req.query.page == 0) {
-        page = 1
-    }
+
     const perpage = 10
     const start = (page - 1) * perpage
     //const end = page * perpage
@@ -31,7 +27,8 @@ let getCategory = async (req, res) => {
     } else {
         pageNext = page + 1
     }
-
+    let lang = await LanguageModel.listAll()
+    la = JSON.parse(JSON.stringify(lang))
     let Cate = await CategoryModel.find().skip(start).limit(perpage).populate("languages").exec()
     cate = JSON.parse(JSON.stringify(Cate))
 
@@ -41,7 +38,7 @@ let getCategory = async (req, res) => {
         x = JSON.parse(JSON.stringify(x))
 
         var item = await CategoryModel.find().populate("languages").where({lang_id:x._id})
-        list = JSON.parse(JSON.stringify(item))
+        var list = JSON.parse(JSON.stringify(item))
     }
     return res.render('admin/category/category', {
         success: req.flash("success"),
