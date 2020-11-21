@@ -42,7 +42,7 @@ let getCategory = async (req, res) => {
         x = JSON.parse(JSON.stringify(x))
 
         var item = await CategoryModel.find().populate("languages").where({lang_id:x._id})
-        list = JSON.parse(JSON.stringify(item))
+        var list = JSON.parse(JSON.stringify(item))
     }
     return res.render('admin/category/category', {
         success: req.flash("success"),
@@ -51,7 +51,6 @@ let getCategory = async (req, res) => {
         data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage },
         la: la,
         list: list
-
     })
 }
 let getRemoveCategory = async (req, res) => {
