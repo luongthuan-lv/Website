@@ -4,12 +4,39 @@ const CategoryModel = require("./../../models/categoryModel")
 const LanguageModel = require("./../../models/languageModel")
 const multer = require("multer")
 let getTour = async (req, res) => {
-    let tour = await TourModel.listAll()
+    if (req.query.page) {
+        var page = parseInt(req.query.page)
+    } else {
+        page = 1
+    }
+    if (req.query.page == 0) {
+        page = 1
+    }
+    const perpage = 10
+    const start = (page - 1) * perpage
+    //const end = page * perpage
+
+    const totalRows = await CategoryModel.find()
+    const totalPage = Math.ceil(totalRows.length / perpage)
+
+    let pagePrev, pageNext
+    if (page <= 1) {
+        pagePrev = 1
+    } else {
+        pagePrev = page - 1
+    }
+    if (page >= totalPage) {
+        pageNext = totalPage
+    } else {
+        pageNext = page + 1
+    }
+    let tour = await TourModel.find().skip(start).limit(perpage).populate("categories").populate("languages").exec()
     tour = JSON.parse(JSON.stringify(tour))
     return res.render("admin/tour/tour", {
         success: req.flash("success"),
         errors: req.flash("errors"),
-        tour: tour
+        tour: tour,
+        data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage }
     })
 }
 let getRemoveTour = async (req, res) => {

@@ -47,7 +47,6 @@ let getCategory = async (req, res) => {
         data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage },
         la: la,
         list: list
-
     })
 }
 let getRemoveCategory = async (req, res) => {
