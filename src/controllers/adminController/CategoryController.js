@@ -6,17 +6,20 @@ let getCategory = async (req, res) => {
     if (req.query.page) {
         var page = parseInt(req.query.page)
     } else {
-        pageNext = page + 1
+        page = 1
+    }
+    if (req.query.page === 0) {
+        page = 1
     }
 
-    const perpage = 10
-    const start = (page - 1) * perpage
+    const perpage = 10;
+    const start = (page - 1) * perpage;
     //const end = page * perpage
 
-    const totalRows = await CategoryModel.find()
-    const totalPage = Math.ceil(totalRows.length / perpage)
+    const totalRows = await CategoryModel.find();
+    const totalPage = Math.ceil(totalRows.length / perpage);
 
-    let pagePrev, pageNext
+    let pagePrev, pageNext;
     if (page <= 1) {
         pagePrev = 1
     } else {
@@ -150,11 +153,12 @@ let postEditCategory = (req, res) => {
             res.redirect(`/category/edit/${id}`)
         } else {
             try {
-                const id = req.params.id
+                const id = req.params.id;
+                var pathss = '/images/category/' + req.file.filename;
                 let item = {
                     cate_name: req.body.cate_name,
                     router: req.body.router,
-                    avatar: req.file.filename,
+                    avatar: pathss,
                     lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
                 }
 

@@ -10,8 +10,8 @@ const CategoryModel = new Schema({
         type: mongoose.Types.ObjectId,
         ref: 'language'
     },
-    created_at: { type: Number, default: Date.now },
-    deleted_at: { type: Number, default: null }
+    star: { type: Number, default: null },
+    created_at: { type: Number, default: Date.now }
 }, {
     toJSON: { virtuals: true },
     //toObject: { virtuals: true }

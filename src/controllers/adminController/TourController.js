@@ -9,10 +9,10 @@ let getTour = async (req, res) => {
     } else {
         page = 1
     }
-    if (req.query.page == 0) {
+    if (req.query.page === 0) {
         page = 1
     }
-    const perpage = 10
+    const perpage = 90
     const start = (page - 1) * perpage
     //const end = page * perpage
 
@@ -97,6 +97,9 @@ let postAddTour = async (req, res) => {
             res.redirect("/tour/add")
         } else {
             // try {
+            var list_picture= req.files.map(item=>{
+                return '/images/tour/'+item.filename;
+            })
             let item = {
                
                 place: req.body.place,
@@ -105,20 +108,16 @@ let postAddTour = async (req, res) => {
                     lat: req.body.lat
                 },
                 information: req.body.information,
-                avatar: req.files,
+
+                // avatar: req.files,
+                avatar: list_picture,
                 lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
                 cate_id: (req.body.cate_id).match(/^[0-9a-fA-F]{24}$/)
             }
             await TourModel.createNew(item)
-            // update moi dung thoi
-            //fs.remove(`./src/public/images/category/${req.file.filename}`)
             req.flash("success", transTour.createSuccess)
             res.redirect('/tour')
 
-            // } catch (error) {
-            //     req.flash("errors", transTour.tour_avatar_not_empty)
-            //     res.redirect("/tour/add")
-            // }
         }
 
 

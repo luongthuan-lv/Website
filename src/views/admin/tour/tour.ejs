@@ -17,7 +17,7 @@
     </div>
     <!--/.row-->
     <div id="toolbar" class="btn-group">
-        <a href="tour/add" class="btn btn-success">
+        <a href="/tour/add" class="btn btn-success">
             <i class="glyphicon glyphicon-plus"></i> Thêm Tour
         </a>
     </div>
@@ -59,7 +59,7 @@
                                 <td style="text-align: center"><%=item.location.lat  %> </td>
                                 <td style="text-align: center">
                                     <% item.avatar.forEach(i => { %>
-                                    <img src="images/tour/<%=i.filename%>" alt="" height="100" width="100">
+                                    <img src="<%=i%>" alt="" height="100" width="100">
                                     <% }) %>
                                 </td>
                                 <% item.languages.forEach(i => { %>
