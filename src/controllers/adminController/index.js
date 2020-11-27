@@ -3,9 +3,10 @@ const signUpController = require("./signUpController")
 const dashboardController = require("./dashboardController")
 const logoutController = require("./logoutController")
 const UserController = require("./userController")
-const CategoryController  = require('./CategoryController')
+const CategoryController = require('./CategoryController')
 const LanguageController = require("./LanguageController")
 const TourController = require("./TourController")
+const VehicleController = require("./VehicleController")
 
 
 const SignIn = SignInController
@@ -16,6 +17,8 @@ const User = UserController
 const Cate = CategoryController
 const Lang = LanguageController
 const Tour = TourController
+const Vehicles=VehicleController
+
 
 
 module.exports = {
@@ -26,5 +29,6 @@ module.exports = {
     User: User,
     Cate: Cate,
     Lang: Lang,
-    Tour: Tour
+    Tour: Tour,
+    Vehicle: Vehicles
 }

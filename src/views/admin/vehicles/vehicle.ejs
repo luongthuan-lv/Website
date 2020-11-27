@@ -5,20 +5,20 @@
             <li><a href="#"><svg class="glyph stroked home">
                         <use xlink:href="#stroked-home"></use>
                     </svg></a></li>
-            <li class="active">Danh sách ảnh của Tour </li>
+            <li class="active">Danh sách xe </li>
         </ol>
     </div>
     <!--/.row-->
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Danh sách ảnh của Tour </h1>
+            <h1 class="page-header">Danh sách xe </h1>
         </div>
     </div>
     <!--/.row-->
     <div id="toolbar" class="btn-group">
-        <a href="gallery/add" class="btn btn-success">
-            <i class="glyphicon glyphicon-plus"></i> Thêm hình ảnh cho Tour
+        <a href="/vehicle/add" class="btn btn-success">
+            <i class="glyphicon glyphicon-plus"></i> Thêm tuyến xe
         </a>
     </div>
     <br><br>
@@ -37,31 +37,24 @@
                         <thead>
                             <tr>
                                 <th data-field="id" data-sortable="true" style="text-align: center">ID</th>
-                                <th data-field="name" data-sortable="true" style="text-align: center">Hình ảnh Tour</th>
-                                <th data-field="name" data-sortable="true" style="text-align: center">Tên Tour</th>
+                                <th data-field="name" data-sortable="true" style="text-align: center">Tên xe</th>
                                 <th style="text-align: center">Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% Tour.forEach(item => {%>
-                            <tr>
-                                <td style="text-align: center"><%=item._id %> </td>
-                                <td style="text-align: center">
-                                    <% item.avatar.forEach(i => { %>
-                                    <img src="images/gallery/<%=i.filename%>" alt="" height="100" width="100">
-                                    <% }) %>
-                                </td>
-                                <% item.tours.forEach(i => { %>
-                                <td style="text-align: center"><%=i.router %></td>
-                                <% }) %>
-                                <td class="form-group" style="text-align: center">
-                                    <a href="" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></a>
-                                    <a href="/gallery/remove/<%=item._id  %> " class="btn btn-danger"
-                                        onclick="return alert('Bạn có muốn xóa không!')"><i
+                        <% for(x in data.vehicle){ %>
+                        <tr>
+                            <td style="text-align: center"><%=data.vehicle[x]._id %> </td>
+                            <td style="text-align: center"><%=data.vehicle[x].vehicle_name  %> </td>
+                            </span></td>
+                            <td class="form-group" style="text-align: center">
+                                <a href="/vehicle/edit/<%=data.vehicle[x]._id %> " class="btn btn-primary"><i
+                                            class="glyphicon glyphicon-pencil"></i></a>
+                                <a href="/vehicle/remove/<%=data.vehicle[x]._id %> " class="btn btn-danger" onclick="return alert('Bạn có muốn xóa không!')"><i
                                             class="glyphicon glyphicon-remove"></i></a>
-                                </td>
-                            </tr>
-                            <% })%>
+                            </td>
+                        </tr>
+                        <% } %>
                         </tbody>
                     </table>
                 </div>
