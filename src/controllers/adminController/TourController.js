@@ -2,35 +2,30 @@ const TourModel = require("./../../models/tourModel")
 const { transTour } = require("./../../../lang/vi")
 const CategoryModel = require("./../../models/categoryModel")
 const LanguageModel = require("./../../models/languageModel")
+const VehicleModel = require("./../../models/vehicleModel")
 const multer = require("multer")
 let getTour = async (req, res) => {
-    if (req.query.page) {
-        var page = parseInt(req.query.page)
-    } else {
-        page = 1
-    }
-    if (req.query.page === 0) {
-        page = 1
-    }
-    const perpage = 90
-    const start = (page - 1) * perpage
-    //const end = page * perpage
+    let page = parseInt(req.query.page) || 1
+    let perpage = 9
+    let perRow = page * perpage - perpage
 
-    const totalRows = await CategoryModel.find()
-    const totalPage = Math.ceil(totalRows.length / perpage)
+    let productAll = await TourModel.find()
+    let totalPage = Math.ceil(productAll.length / perpage)
 
-    let pagePrev, pageNext
-    if (page <= 1) {
+    let  pagePrev, pageNext
+    // pagePrev
+    if (page - 1 <= 0) {
         pagePrev = 1
     } else {
-        pagePrev = page - 1
+        pageNext = page - 1
     }
-    if (page >= totalPage) {
+    // pageNext
+    if (page + 1 >= totalPage) {
         pageNext = totalPage
     } else {
         pageNext = page + 1
     }
-    let tour = await TourModel.find().skip(start).limit(perpage).populate("categories").populate("languages").exec()
+    let tour = await TourModel.find().skip(perRow).limit(perpage).populate("categories").populate("languages").exec()
     tour = JSON.parse(JSON.stringify(tour))
     return res.render("admin/tour/tour", {
         success: req.flash("success"),
@@ -46,6 +41,8 @@ let getRemoveTour = async (req, res) => {
     res.redirect('/tour')
 }
 let getAddTour = async (req, res) => {
+    let Vehicle = await VehicleModel.listAll()
+    Vehicle = JSON.parse(JSON.stringify(Vehicle))
     let cate = await CategoryModel.listAll()
     ca = JSON.parse(JSON.stringify(cate))
     let lang = await LanguageModel.listAll()
@@ -54,7 +51,8 @@ let getAddTour = async (req, res) => {
         success: req.flash("success"),
         errors: req.flash("errors"),
         ca: ca,
-        la: la
+        la: la,
+        Vehicle: Vehicle
     })
 }
 let storage = multer.diskStorage({

@@ -30,5 +30,5 @@ module.exports = {
     Cate: Cate,
     Lang: Lang,
     Tour: Tour,
-    Vehicle: Vehicles
+    Vehicles: Vehicles
 }

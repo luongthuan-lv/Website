@@ -33,8 +33,14 @@
                         <form role="form" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label>Tên danh mục:</label>
-                                <input type="text" name="cate_name" value="<%= item.cate_name %> " class="form-control"
-                                       placeholder="Tên danh mục...">
+                                <select name="cate_name" class="form-control">
+                                        <% Vehicle.forEach(i => { %>
+                                            <option
+                                            <% if(i.vehicle_name == item.cate_name) { %> selected
+                                                    <% } %>
+                                                                              value="<%= i.vehicle_name %>"><%=i.vehicle_name %> </option>
+                                        <% }) %>
+                                    </select>
                             </div>
                             <div class="form-group">
                                 <label>Tên router:</label>

@@ -33,7 +33,11 @@
                         <form role="form" method="post" enctype="multipart/form-data" action="/category/add/post">
                             <div class="form-group">
                                 <label>Tên danh mục:</label>
-                                <input type="text" name="cate_name" class="form-control" placeholder="Tên danh mục...">
+                                <select name="cate_name" id="" class="form-control">
+                                    <% Vehicle.forEach(item => { %>
+                                            <option value="<%=item.vehicle_name  %> "><%=item.vehicle_name  %> </option>
+                                    <% }) %> 
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Tên router:</label>

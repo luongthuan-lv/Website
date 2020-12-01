@@ -1,4 +1,4 @@
-const {SignIn, SignUp, dashboard, logout, User, Cate, Lang, Tour,Vehicle} = require("./../controllers/adminController/index")
+const {SignIn, SignUp, dashboard, logout, User, Cate, Lang, Tour,Vehicles} = require("./../controllers/adminController/index")
 const {registerValidation} = require("./../validation/index")
 const initPassportLocal = require("./../controllers/passportController/local")
 const passport = require("passport")
@@ -49,10 +49,12 @@ let initRouter = (app) => {
     router.get('/tour/add', logout.checkLoggedIn, Tour.getAddTour)
     router.post('/tour/add/post', logout.checkLoggedIn, Tour.postAddTour)
     //---------------Vehicle----------------
-    router.get('/vehicle', logout.checkLoggedIn, Vehicle.getVehicle)
-    router.get('/vehicle/remove/:id', logout.checkLoggedIn, Vehicle.getRemoveVehicle)
-    router.get('/vehicle/add', logout.checkLoggedIn, Vehicle.getAddVehicle)
-    router.post('/vehicle/add/post', logout.checkLoggedIn, Vehicle.postAddVehicle)
+    router.get('/vehicle', logout.checkLoggedIn, Vehicles.getVehicle)
+    router.get('/vehicle/remove/:id', logout.checkLoggedIn, Vehicles.getRemoveVehicle)
+    router.get('/vehicle/add', logout.checkLoggedIn, Vehicles.getAddVehicle)
+    router.post('/vehicle/add/post', logout.checkLoggedIn, Vehicles.postAddVehicle)
+    router.get('/vehicle/edit/:id', logout.checkLoggedIn, Vehicles.getEdit)
+    router.post('/vehicle/edit/:id', logout.checkLoggedIn, Vehicles.postEdit)
 
 
     return app.use('/', router)

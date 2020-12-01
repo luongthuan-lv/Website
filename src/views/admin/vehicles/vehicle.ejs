@@ -42,19 +42,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <% for(x in data.vehicle){ %>
-                        <tr>
-                            <td style="text-align: center"><%=data.vehicle[x]._id %> </td>
-                            <td style="text-align: center"><%=data.vehicle[x].vehicle_name  %> </td>
-                            </span></td>
-                            <td class="form-group" style="text-align: center">
-                                <a href="/vehicle/edit/<%=data.vehicle[x]._id %> " class="btn btn-primary"><i
+                            <% vehicle.forEach(item => { %>
+                            <tr>
+                                <td style="text-align: center"><%=item._id %> </td>
+                                <td style="text-align: center"><%=item.vehicle_name  %> </td>
+                                </span></td>
+                                <td class="form-group" style="text-align: center">
+                                    <a href="/vehicle/edit/<%=item._id %> " class="btn btn-primary"><i
                                             class="glyphicon glyphicon-pencil"></i></a>
-                                <a href="/vehicle/remove/<%=data.vehicle[x]._id %> " class="btn btn-danger" onclick="return alert('Bạn có muốn xóa không!')"><i
+                                    <a href="/vehicle/remove/<%=item._id %> " class="btn btn-danger"
+                                        onclick="return alert('Bạn có muốn xóa không!')"><i
                                             class="glyphicon glyphicon-remove"></i></a>
-                            </td>
-                        </tr>
-                        <% } %>
+                                </td>
+                            </tr>
+                            <%}); %>
+
+
                         </tbody>
                     </table>
                 </div>

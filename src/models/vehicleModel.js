@@ -19,6 +19,9 @@ VehicleModel.statics = {
     },
     countItem(){
         return this.countDocuments({}).exec()
+    },
+    findVehicleByIdAndUpdate(id,item){
+        return this.findByIdAndUpdate(id,item).exec()
     }
 };
 module.exports = mongoose.model("vehicle", VehicleModel);

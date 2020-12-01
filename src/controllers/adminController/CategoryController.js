@@ -1,4 +1,5 @@
 const CategoryModel = require("./../../models/categoryModel")
+const VehicleModel = require("./../../models/vehicleModel")
 const {transCategory} = require("./../../../lang/vi")
 const multer = require("multer")
 const LanguageModel = require("./../../models/languageModel")
@@ -59,12 +60,15 @@ let getRemoveCategory = async (req, res) => {
     res.redirect('/category')
 }
 let getAddCategory = async (req, res) => {
+    let Vehicle = await VehicleModel.listAll()
+    Vehicle = JSON.parse(JSON.stringify(Vehicle))
     let lang = await LanguageModel.listAll()
     la = JSON.parse(JSON.stringify(lang))
     res.render("admin/category/add_category", {
         success: req.flash("success"),
         errors: req.flash("errors"),
-        la: la
+        la: la,
+        Vehicle: Vehicle
     })
 }
 
@@ -126,6 +130,8 @@ let postAddCategory = (req, res) => {
 }
 
 let getEditCategory = async (req, res) => {
+    let Vehicle = await VehicleModel.listAll()
+    Vehicle = JSON.parse(JSON.stringify(Vehicle))
     let id = req.params.id
     let lang = await LanguageModel.listAll()
     la = JSON.parse(JSON.stringify(lang))
@@ -135,7 +141,8 @@ let getEditCategory = async (req, res) => {
         success: req.flash("success"),
         errors: req.flash("errors"),
         item: item,
-        la: la
+        la: la,
+        Vehicle: Vehicle
     })
 }
 let postEditCategory = (req, res) => {
