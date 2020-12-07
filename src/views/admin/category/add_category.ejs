@@ -32,16 +32,20 @@
                         <% } %>
                         <form role="form" method="post" enctype="multipart/form-data" action="/category/add/post">
                             <div class="form-group">
-                                <label>Tên danh mục:</label>
-                                <select name="cate_name" id="" class="form-control">
+                                <label>Danh mục:</label>
+                                <select name="cate_id" id="" class="form-control">
                                     <% Vehicle.forEach(item => { %>
-                                            <option value="<%=item.vehicle_name  %> "><%=item.vehicle_name  %> </option>
-                                    <% }) %> 
+                                            <option value="<%=item._id  %> "><%=item.vehicle_name  %> </option>
+                                    <% }) %>
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label>Tên danh mục:</label>
+                                <input type="text" name="cate_name" class="form-control"  placeholder="Tên danh mục...">
+                            </div>
+                            <div class="form-group">
                                 <label>Tên router:</label>
-                                <input type="text" name="router" class="form-control" placeholder="Tên danh mục...">
+                                <input type="text" name="router" class="form-control" placeholder="Tên lộ trình...">
                             </div>
                             <div class="form-group">
                                 <label>Language:</label>

@@ -36,19 +36,19 @@ let getCategory = async (req, res) => {
     let Cate = await CategoryModel.find().skip(start).limit(perpage).populate("languages").exec()
     cate = JSON.parse(JSON.stringify(Cate))
 
-      // search theo key=language
+    // search theo key=language
     if (req.query.key) {
-        let x = await LanguageModel.findOne().where({ lang_name: req.query.key }).exec()
+        let x = await LanguageModel.findOne().where({lang_name: req.query.key}).exec()
         x = JSON.parse(JSON.stringify(x))
 
-        var item = await CategoryModel.find().populate("languages").where({lang_id:x._id})
+        var item = await CategoryModel.find().populate("languages").where({lang_id: x._id})
         var list = JSON.parse(JSON.stringify(item))
     }
     return res.render('admin/category/category', {
         success: req.flash("success"),
         errors: req.flash("errors"),
         cate: cate,
-        data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage },
+        data: {pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage},
         la: la,
         list: list
     })
@@ -93,8 +93,11 @@ let avatarUploadFile = multer({
 
 let postAddCategory = (req, res) => {
     avatarUploadFile(req, res, async (error) => {
-        if (req.body.cate_name == "") {
+        if (req.body.cate_id == "") {
             req.flash("errors", transCategory.cate_not_empty)
+            res.redirect("/category/add")
+        } else if (req.body.cate_name == "") {
+            req.flash("errors", transCategory.cate_name_not_empty)
             res.redirect("/category/add")
         } else if (req.body.router == "") {
             req.flash("errors", transCategory.router_not_empty)
@@ -106,6 +109,7 @@ let postAddCategory = (req, res) => {
             try {
                 var pathss = '/images/category/' + req.file.filename;
                 let item = {
+                    cate_id: req.body.cate_id,
                     cate_name: req.body.cate_name,
                     router: req.body.router,
                     avatar: pathss,
@@ -125,7 +129,6 @@ let postAddCategory = (req, res) => {
         }
 
 
-
     })
 }
 
@@ -135,7 +138,7 @@ let getEditCategory = async (req, res) => {
     let id = req.params.id
     let lang = await LanguageModel.listAll()
     la = JSON.parse(JSON.stringify(lang))
-    let item = await CategoryModel.findItemById({ _id: id })
+    let item = await CategoryModel.findItemById({_id: id})
     item = JSON.parse(JSON.stringify(item))
     return res.render("admin/category/edit_category", {
         success: req.flash("success"),
@@ -149,8 +152,11 @@ let postEditCategory = (req, res) => {
 
     avatarUploadFile(req, res, async (error) => {
         let id = req.params.id
-        if (req.body.cate_name == "") {
+        if (req.body.cate_id == "") {
             req.flash("errors", transCategory.cate_not_empty)
+            res.redirect(`/category/edit/${id}`)
+        } else if (req.body.cate_name == "") {
+            req.flash("errors", transCategory.cate_name_not_empty)
             res.redirect(`/category/edit/${id}`)
         } else if (req.body.router == "") {
             req.flash("errors", transCategory.router_not_empty)
@@ -163,7 +169,8 @@ let postEditCategory = (req, res) => {
                 const id = req.params.id;
                 var pathss = '/images/category/' + req.file.filename;
                 let item = {
-                    cate_name: req.body.cate_name,
+                    cate_id: req.body.cate_id,
+                    cate_name:req.body.cate_name,
                     router: req.body.router,
                     avatar: pathss,
                     lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
@@ -180,7 +187,6 @@ let postEditCategory = (req, res) => {
                 res.redirect(`/category/edit/${id}`)
             }
         }
-
 
 
     })

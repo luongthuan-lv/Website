@@ -3,7 +3,8 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const CategoryModel = new Schema({
-    cate_name: String,
+    cate_id: String,
+    cate_name:String,
     router: String,
     avatar: { type: String, default: null },
     lang_id: {

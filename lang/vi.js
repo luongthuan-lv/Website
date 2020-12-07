@@ -44,6 +44,7 @@ const transUser = {
 const transCategory = {
     deleteSuccess : "Xóa danh mục thành công!",
     cate_not_empty: "Không được thêm danh mục trống!",
+    cate_name_not_empty: "Không được thêm tên danh mục trống!",
     router_not_empty: "Không được thêm router trống!",
     cate_avatar_not_empty: "Avatar danh mục không được bỏ trống",
     avatar_type: "Định dạng ảnh bao gồm JPG-PNG-JPEG",
@@ -58,7 +59,8 @@ const transTour = {
     avatar_type: "Định dạng ảnh bao gồm JPG-PNG-JPEG",
     deleteSuccess : "Xóa tour thành công!",
     createSuccess: "Tạo tour thành công",
-    router_not_empty: "Router còn để trống, làm ơn kiểm tra lại",
+    category_not_empty: "Category còn để trống, làm ơn kiểm tra lại",
+    waypoint_not_empty: "Waypoint còn để trống, làm ơn kiểm tra lại",
     place_not_empty: "Place còn để trống, làm ơn kiểm tra lại",
     lon_not_empty: "Longitude còn để trống, làm ơn kiểm tra lại",
     lat_not_empty: "Latitude còn để trống, làm ơn kiểm tra lại",
