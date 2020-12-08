@@ -36,7 +36,7 @@ initRoute(app)
 // })
 
 app.listen(process.env.PORT ||8017, () => {
-    console.log('Server listening at port 8017')
+    console.log('Server listening at port 8017   - Aa@123456')
 });
 
 // lây danh sách tour

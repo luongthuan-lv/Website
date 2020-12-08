@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 
 const TourSchema = new Schema({
     place: {type: String, default: null},
+    waypoint:String,
     location: {
         lon: {type: String, default: null},
         lat: {type: String, default: null}
@@ -16,10 +17,7 @@ const TourSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: 'language'
     },
-    cate_id: {
-        type: mongoose.Types.ObjectId,
-        ref: 'category'
-    },
+    cate_id: String,
     createdAt: {type: Number, default: Date.now},
     updatedAt: {type: Number, default: null},
 }, {
@@ -41,7 +39,7 @@ TourSchema.statics = {
         return this.create(item)
     },
     listAll() {
-        return this.find().populate("categories").populate("languages").exec()
+        return this.find().populate("languages").exec()
     },
     removeById(id) {
         return this.findByIdAndRemove(id).exec()

@@ -1,5 +1,5 @@
 const TourModel = require("./../../models/tourModel")
-const { transTour } = require("./../../../lang/vi")
+const {transTour} = require("./../../../lang/vi")
 const CategoryModel = require("./../../models/categoryModel")
 const LanguageModel = require("./../../models/languageModel")
 const VehicleModel = require("./../../models/vehicleModel")
@@ -12,7 +12,7 @@ let getTour = async (req, res) => {
     let productAll = await TourModel.find()
     let totalPage = Math.ceil(productAll.length / perpage)
 
-    let  pagePrev, pageNext
+    let pagePrev, pageNext
     // pagePrev
     if (page - 1 <= 0) {
         pagePrev = 1
@@ -25,18 +25,18 @@ let getTour = async (req, res) => {
     } else {
         pageNext = page + 1
     }
-    let tour = await TourModel.find().skip(perRow).limit(perpage).populate("categories").populate("languages").exec()
+    let tour = await TourModel.find().skip(perRow).limit(perpage).populate("languages").exec()
     tour = JSON.parse(JSON.stringify(tour))
     return res.render("admin/tour/tour", {
         success: req.flash("success"),
         errors: req.flash("errors"),
         tour: tour,
-        data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage }
+        data: {pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage}
     })
 }
 let getRemoveTour = async (req, res) => {
     const id = req.params.id
-    await TourModel.removeById({ _id: id })
+    await TourModel.removeById({_id: id})
     req.flash("success", transTour.deleteSuccess)
     res.redirect('/tour')
 }
@@ -75,8 +75,8 @@ let avatarUploadFile = multer({
 let postAddTour = async (req, res) => {
 
     avatarUploadFile(req, res, async (error) => {
-        if (req.body.router == "") {
-            req.flash("errors", transTour.router_not_empty)
+        if (req.body.cate_id == "") {
+            req.flash("errors", transTour.category_not_empty)
             res.redirect("/tour/add")
         } else if (req.body.place == "") {
             req.flash("errors", transTour.place_not_empty)
@@ -95,29 +95,27 @@ let postAddTour = async (req, res) => {
             res.redirect("/tour/add")
         } else {
             // try {
-            var list_picture= req.files.map(item=>{
-                return '/images/tour/'+item.filename;
+            var list_picture = req.files.map(item => {
+                return '/images/tour/' + item.filename;
             })
             let item = {
-               
+                cate_id: req.body.cate_name,
+                waypoint:req.body.waypoint,
                 place: req.body.place,
                 location: {
                     lon: req.body.lon,
                     lat: req.body.lat
                 },
                 information: req.body.information,
-
-                // avatar: req.files,
                 avatar: list_picture,
                 lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
-                cate_id: (req.body.cate_id).match(/^[0-9a-fA-F]{24}$/)
+                // cate_id: (req.body.cate_id).match(/^[0-9a-fA-F]{24}$/)
             }
             await TourModel.createNew(item)
             req.flash("success", transTour.createSuccess)
             res.redirect('/tour')
 
         }
-
 
 
     })
