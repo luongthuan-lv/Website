@@ -15,13 +15,13 @@ let sendMail = (to, subject, htmlContent) => {
             rejectUnauthorized:false
         },
         auth: {
-            user: "luongthuan2k@gmail.com",
+            user: "thuanlvph08370@fpt.edu.vn",
             pass: "Lt05122000."
         }
     })
 
     let options = {
-        from: "luongthuan2k@gmail.com",
+        from: "thuanlvph08370@fpt.edu.vn",
         to: to,
         subject: subject,
         html: htmlContent

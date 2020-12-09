@@ -1,0 +1,137 @@
+<%- include('../header') %>
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">
+                    <svg class="glyph stroked home">
+                        <use xlink:href="#stroked-home"></use>
+                    </svg>
+                </a></li>
+            <li><a href="">Quản lý Tour</a></li>
+            <li class="active">Edit Tour <%=item.place  %> </li>
+        </ol>
+    </div>
+    <!--/.row-->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Edit Tour <%=item.place  %> </h1>
+        </div>
+    </div>
+    <!--/.row-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-md-8">
+                        <% if(errors != null){ %>
+                        <% errors.forEach(element => { %>
+                        <div class="alert alert-danger"><%- element %> </div>
+                        <% }); %>
+                        <% } %>
+                        <form method="POST" enctype="multipart/form-data">
+
+                            <div class="form-group">
+                                <label>Place:</label>
+                                <input type="text" name="place" class="form-control" value="<%=item.place  %>" placeholder="Tên place...">
+                            </div>
+                       
+                            <div class="form-group">
+                                <label>Latitude:</label>
+                                <input type="text" name="lat" class="form-control" value="<%=item.location.lat  %>" placeholder="Tên Latitude...">
+                            </div>
+                            <div class="form-group">
+                                <label>Longitude:</label>
+                                <input type="text" name="lon" class="form-control" value="<%=item.location.lon  %>" placeholder="Tên Longitude...">
+                            </div>
+                        
+
+                            <div class="form-group">
+                                <label>Language:</label>
+                                <select name="lang_id" class="form-control">
+                                    <% la.forEach(i => { %>
+                                        <option <% if(i._id == item.lang_id) { %> selected <% } %> 
+                                             value="<%= i._id  %>" ><%= i.lang_name  %> </option>
+                                        <%}) %> 
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Vehicle</label>
+                                <select name="cate_id" id="" class="form-control">
+                                    <% Vehicle.forEach(i => { %>
+                                        <option <% if(i._id == item.vehicle_id) { %> selected <% } %> 
+                                             value="<%= i._id  %>" ><%= i.vehicle_name  %> </option>
+                                        <%}) %> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Infomation:</label>
+                                <br>
+                                <textarea name="information" id="" class="form-control" value="" rows="10"><%=item.information  %></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Way:</label>
+                                <br>
+                                <input type="text" name="way" class="form-control" value="<%=item.way  %>" placeholder="Tên Way...">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tour Image</label>
+                                <input type="file" name="avatar" multiple id="input-many-files"
+                                    class="form-control-file border">
+                                <br>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="preview-images" style="height: fit-content; width: fit-content;"></div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="">Ảnh cũ</label>
+                                    <div class="preview" style="height: fit-content; width: fit-content;">
+                                        <% item.avatar.forEach(x => { %>
+                                            <img src="<%=x%>" alt="" height="150" width="150">
+                                        <% }) %> 
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <script>
+
+                                $(document).ready(function () {
+                                    // Multiple images preview in browser - trungquandev.com
+                                    let imagesPreview = function (input, placeToInsertImagePreview) {
+                                        if (input.files) {
+                                            let filesAmount = input.files.length;
+                                            for (i = 0; i < filesAmount; i++) {
+                                                let reader = new FileReader();
+                                                reader.onload = function (event) {
+                                                    $($.parseHTML("<img width='200' height='200'>")).attr("src", event.target.result).appendTo(placeToInsertImagePreview);
+                                                }
+                                                reader.readAsDataURL(input.files[i]);
+                                            }
+                                        }
+                                    };
+
+                                    $("#input-many-files").on("change", function () {
+                                        imagesPreview(this, "div.preview-images");
+                                    });
+                                });
+                            </script>
+
+
+                            <button type="submit" name="sbm" class="btn btn-success">Thêm mới</button>
+                            <button type="reset" class="btn btn-default">Làm mới</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div><!-- /.col
+        </div>
+    </div>
+</div>
+<!--/.main-->
+<%- include('../footer') %>

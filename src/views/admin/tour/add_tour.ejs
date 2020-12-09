@@ -35,10 +35,7 @@
                                 <label>Place:</label>
                                 <input type="text" name="place" class="form-control" placeholder="Tên place...">
                             </div>
-                            <div class="form-group">
-                                <label>Waypoint:</label>
-                                <input type="text" name="waypoint" class="form-control" placeholder="Waypoint...">
-                            </div>
+                       
                             <div class="form-group">
                                 <label>Latitude:</label>
                                 <input type="text" name="lat" class="form-control" placeholder="Tên Latitude...">
@@ -58,9 +55,9 @@
 
                             <div class="form-group">
                                 <label>Vehicle</label>
-                                <select name="cate_name" id="" class="form-control">
+                                <select name="cate_id" id="" class="form-control">
                                     <% Vehicle.forEach(item => { %>
-                                    <option value="<%=item._id  %> "><%=item.vehicle_name  %> </option>
+                                    <option value="<%=item._id.match(/^[0-9a-fA-F]{24}$/)  %>"><%=item.vehicle_name  %> </option>
                                     <% }) %>
                                 </select>
                             </div>
@@ -70,6 +67,11 @@
                                 <label>Infomation:</label>
                                 <br>
                                 <textarea name="information" id="" class="form-control" rows="10"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Way:</label>
+                                <br>
+                                <input type="text" name="way" class="form-control" placeholder="Tên Way...">
                             </div>
 
                             <div class="form-group">
@@ -114,7 +116,7 @@
                         </form>
                     </div>
                 </div>
-            </div><!-- /.col-->
+            </div><!-- /.col
         </div>
     </div>
 </div>

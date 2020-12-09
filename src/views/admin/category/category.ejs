@@ -91,9 +91,11 @@
                             <tr>
                                 <th data-field="id" data-sortable="true" style="text-align: center">ID</th>
                                 <th data-field="name" data-sortable="true" style="text-align: center">Tên danh mục</th>
-                                <th data-field="name" data-sortable="true" style="text-align: center">Tên router</th>
-                                <th data-field="name" data-sortable="true" style="text-align: center">Tên Language</th>
+                                <th data-field="name" data-sortable="true" style="text-align: center">Đánh giá</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Ảnh đại diện</th>
+                                <th data-field="price" data-sortable="true" style="text-align: center">Tuyến xe</th>
+                                <th data-field="name" data-sortable="true" style="text-align: center">Tên router</th>
+                                <th data-field="name" data-sortable="true" style="text-align: center">Ngôn ngữ</th>
                                 <th style="text-align: center">Hành động</th>
                             </tr>
                         </thead>
@@ -103,13 +105,20 @@
                             <tr>
                                 <td style="text-align: center"><%=item._id %> </td>
                                 <td style="text-align: center"><%=item.cate_name  %> </td>
-                                <td style="text-align: center"><%=item.router  %> </td>
+                                <td style="text-align: center"><%=item.starCate  %> </td>
+                                <td style="text-align: center"><img src="<%=item.avatar%>" alt="" height="100"
+                                        width="100"></td>
+                                </span></td>
+                                <% item.vehicles.forEach(i => { %>
+                                <td style="text-align: center"><%=i.vehicle_name  %> </td>
+                                <% }) %>
+
+                                <td style="text-align: center"><%=item.router %> </td>
+
                                 <% item.languages.forEach(i => { %>
                                 <td style="text-align: center"><%=i.lang_name  %> </td>
                                 <% }) %>
-                                <td style="text-align: center"><img src="<%=item.avatar%>" alt=""
-                                        height="100" width="100"></td>
-                                </span></td>
+
                                 <td class="form-group" style="text-align: center">
                                     <a href="/category/edit/<%=item._id %> " class="btn btn-primary"><i
                                             class="glyphicon glyphicon-pencil"></i></a>
@@ -120,26 +129,33 @@
                             </tr>
                             <%}) %>
                             <% }else{ %>
-                                <% list.forEach(item => { %>
-                                    <tr>
-                                        <td style="text-align: center"><%=item._id %> </td>
-                                        <td style="text-align: center"><%=item.cate_name  %> </td>
-                                        <td style="text-align: center"><%=item.router  %> </td>
-                                        <% item.languages.forEach(i => { %>
-                                        <td style="text-align: center"><%=i.lang_name  %> </td>
-                                        <% }) %>
-                                        <td style="text-align: center"><img src="<%=item.avatar%>" alt=""
-                                                height="100" width="100"></td>
-                                        </span></td>
-                                        <td class="form-group" style="text-align: center">
-                                            <a href="/category/edit/<%=item._id %> " class="btn btn-primary"><i
-                                                    class="glyphicon glyphicon-pencil"></i></a>
-                                            <a href="/category/remove/<%=item._id %> " class="btn btn-danger"
-                                                onclick="return alert('Bạn có muốn xóa không!')"><i
-                                                    class="glyphicon glyphicon-remove"></i></a>
-                                        </td>
-                                    </tr>
-                                    <%}) %>
+                            <% list.forEach(item => { %>
+                                <tr>
+                                    <td style="text-align: center"><%=item._id %> </td>
+                                    <td style="text-align: center"><%=item.cate_name  %> </td>
+                                    <td style="text-align: center"><%=item.starCate  %> </td>
+                                    <td style="text-align: center"><img src="<%=item.avatar%>" alt="" height="100"
+                                            width="100"></td>
+                                    </span></td>
+                                    <% item.vehicles.forEach(i => { %>
+                                        <td style="text-align: center"><%=i.vehicle_name  %> </td>
+                                    <% }) %>
+    
+                                    <td style="text-align: center"><%=item.router %> </td>
+    
+                                    <% item.languages.forEach(i => { %>
+                                    <td style="text-align: center"><%=i.lang_name  %> </td>
+                                    <% }) %>
+    
+                                    <td class="form-group" style="text-align: center">
+                                        <a href="/category/edit/<%=item._id %> " class="btn btn-primary"><i
+                                                class="glyphicon glyphicon-pencil"></i></a>
+                                        <a href="/category/remove/<%=item._id %> " class="btn btn-danger"
+                                            onclick="return alert('Bạn có muốn xóa không!')"><i
+                                                class="glyphicon glyphicon-remove"></i></a>
+                                    </td>
+                                </tr>
+                            <%}) %>
                             <%} %>
 
 

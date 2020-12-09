@@ -7,7 +7,7 @@ const CategoryController = require('./CategoryController')
 const LanguageController = require("./LanguageController")
 const TourController = require("./TourController")
 const VehicleController = require("./VehicleController")
-
+const ReportController = require("./reportController")
 
 const SignIn = SignInController
 const SignUp = signUpController
@@ -18,6 +18,7 @@ const Cate = CategoryController
 const Lang = LanguageController
 const Tour = TourController
 const Vehicles=VehicleController
+const Report = ReportController
 
 
 
@@ -30,5 +31,6 @@ module.exports = {
     Cate: Cate,
     Lang: Lang,
     Tour: Tour,
-    Vehicles: Vehicles
+    Vehicles: Vehicles,
+    Report: Report
 }

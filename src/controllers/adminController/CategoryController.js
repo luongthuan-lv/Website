@@ -1,61 +1,72 @@
 const CategoryModel = require("./../../models/categoryModel")
 const VehicleModel = require("./../../models/vehicleModel")
-const {transCategory} = require("./../../../lang/vi")
-const multer = require("multer")
+const ReportModel = require("./../../models/reportModels")
+const { transCategory } = require("./../../../lang/vi")
+const { validationResult } = require("express-validator/check")
 const LanguageModel = require("./../../models/languageModel")
-let getCategory = async (req, res) => {
-    if (req.query.page) {
-        var page = parseInt(req.query.page)
-    } else {
-        page = 1
-    }
-    if (req.query.page === 0) {
-        page = 1
-    }
+let getCategory = (req, res) => {
+    return new Promise(async (resolve, reject) => {
+        if (req.query.page) {
+            var page = parseInt(req.query.page)
+        } else {
+            page = 1
+        }
+        if (req.query.page === 0) {
+            page = 1
+        }
 
-    const perpage = 10;
-    const start = (page - 1) * perpage;
-    //const end = page * perpage
+        const perpage = 10;
+        const start = (page - 1) * perpage;
+        //const end = page * perpage
 
-    const totalRows = await CategoryModel.find();
-    const totalPage = Math.ceil(totalRows.length / perpage);
+        const totalRows = await CategoryModel.find();
+        const totalPage = Math.ceil(totalRows.length / perpage);
 
-    let pagePrev, pageNext;
-    if (page <= 1) {
-        pagePrev = 1
-    } else {
-        pagePrev = page - 1
-    }
-    if (page >= totalPage) {
-        pageNext = totalPage
-    } else {
-        pageNext = page + 1
-    }
-    let lang = await LanguageModel.listAll()
-    la = JSON.parse(JSON.stringify(lang))
-    let Cate = await CategoryModel.find().skip(start).limit(perpage).populate("languages").exec()
-    cate = JSON.parse(JSON.stringify(Cate))
+        let pagePrev, pageNext;
+        if (page <= 1) {
+            pagePrev = 1
+        } else {
+            pagePrev = page - 1
+        }
+        if (page >= totalPage) {
+            pageNext = totalPage
+        } else {
+            pageNext = page + 1
+        }
+        let lang = await LanguageModel.listAll()
+        la = JSON.parse(JSON.stringify(lang))
+        let Cate = await CategoryModel.find().skip(start).limit(perpage).populate("languages").populate("vehicles").exec()
+        cate = JSON.parse(JSON.stringify(Cate))
+        cate.forEach(item => {
+            let id = item._id
+            item.vehicles.forEach(async (o) => {
+                let x = {
+                    starCate: o.StarVehicle
+                }
+                await CategoryModel.updateItem(id, x)
+            })
+        })
+        // search theo key=language
+        if (req.query.key) {
+            let x = await LanguageModel.findOne().where({ lang_name: req.query.key }).exec()
+            x = JSON.parse(JSON.stringify(x))
 
-    // search theo key=language
-    if (req.query.key) {
-        let x = await LanguageModel.findOne().where({lang_name: req.query.key}).exec()
-        x = JSON.parse(JSON.stringify(x))
-
-        var item = await CategoryModel.find().populate("languages").where({lang_id: x._id})
-        var list = JSON.parse(JSON.stringify(item))
-    }
-    return res.render('admin/category/category', {
-        success: req.flash("success"),
-        errors: req.flash("errors"),
-        cate: cate,
-        data: {pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage},
-        la: la,
-        list: list
+            var item = await CategoryModel.find().populate("languages").populate("vehicles").where({ lang_id: x._id })
+            var list = JSON.parse(JSON.stringify(item))
+        }
+        return res.render('admin/category/category', {
+            success: req.flash("success"),
+            errors: req.flash("errors"),
+            cate: cate,
+            data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage },
+            la: la,
+            list: list
+        })
     })
 }
 let getRemoveCategory = async (req, res) => {
     const id = req.params.id
-    await CategoryModel.removeById({_id: id})
+    await CategoryModel.removeById({ _id: id })
     req.flash("success", transCategory.deleteSuccess)
     res.redirect('/category')
 }
@@ -72,64 +83,41 @@ let getAddCategory = async (req, res) => {
     })
 }
 
-let storage = multer.diskStorage({
-    destination: (req, res, callback) => {
-        const dir = "./src/public/images/category"
-        callback(null, dir)
-    },
-    filename: (req, file, callback) => {
-        let math = ["image/png", "image/jpeg", "image/jpg"]
-        if (math.indexOf(file.mimetype) === -1) {
-            return callback(transCategory.avatar_type, null)
-        }
-        let filename = `${Date.now()}-image-${file.originalname}`;
-        callback(null, filename);
+let postAddCategory = async (req, res) => {
+    if (req.uploadErrors) {
+        console.log(req.uploadErrors)
     }
-})
-let avatarUploadFile = multer({
-    storage: storage
-}).single("avatar")
-
-
-let postAddCategory = (req, res) => {
-    avatarUploadFile(req, res, async (error) => {
-        if (req.body.cate_id == "") {
-            req.flash("errors", transCategory.cate_not_empty)
-            res.redirect("/category/add")
-        } else if (req.body.cate_name == "") {
-            req.flash("errors", transCategory.cate_name_not_empty)
-            res.redirect("/category/add")
-        } else if (req.body.router == "") {
-            req.flash("errors", transCategory.router_not_empty)
-            res.redirect("/category/add")
-        } else if (error) {
-            req.flash("errors", transCategory.avatar_type)
-            res.redirect("/category/add")
-        } else {
-            try {
-                var pathss = '/images/category/' + req.file.filename;
-                let item = {
-                    cate_id: req.body.cate_id,
-                    cate_name: req.body.cate_name,
-                    router: req.body.router,
-                    avatar: pathss,
-                    lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
-                }
-
-                await CategoryModel.createNew(item)
-                // update moi dung thoi
-                //fs.remove(`./src/public/images/category/${req.file.filename}`)
-                req.flash("success", transCategory.createSuccess)
-                res.redirect('/category')
-
-            } catch (error) {
-                req.flash("errors", transCategory.cate_avatar_not_empty)
-                res.redirect("/category/add")
-            }
+    let errorArr = []
+    let validaionErrors = validationResult(req)
+    if (!validaionErrors.isEmpty()) {
+        let errors = Object.values(validaionErrors.mapped())
+        errors.forEach(item => {
+            errorArr.push(item.msg)
+        })
+        req.flash("errors", errorArr)
+        res.redirect('/category/add')
+    }
+    try {
+        var pathss = '/images/category/' + req.file.filename;
+        let item = {
+            vehicle_id: (req.body.vehicle_id).match(/^[0-9a-fA-F]{24}$/),
+            cate_name: req.body.cate_name,
+            router: req.body.router,
+            avatar: pathss,
+            lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
         }
 
+        await CategoryModel.createNew(item)
+        // update moi dung thoi
+        //fs.remove(`./src/public/images/category/${req.file.filename}`)
+        req.flash("success", transCategory.createSuccess)
+        res.redirect('/category')
 
-    })
+    } catch (error) {
+        errorArr.push(error)
+        req.flash("errors", errorArr)
+
+    }
 }
 
 let getEditCategory = async (req, res) => {
@@ -138,7 +126,7 @@ let getEditCategory = async (req, res) => {
     let id = req.params.id
     let lang = await LanguageModel.listAll()
     la = JSON.parse(JSON.stringify(lang))
-    let item = await CategoryModel.findItemById({_id: id})
+    let item = await CategoryModel.findItemById({ _id: id })
     item = JSON.parse(JSON.stringify(item))
     return res.render("admin/category/edit_category", {
         success: req.flash("success"),
@@ -148,48 +136,45 @@ let getEditCategory = async (req, res) => {
         Vehicle: Vehicle
     })
 }
-let postEditCategory = (req, res) => {
+let postEditCategory = async (req, res) => {
+    if (req.uploadErrors) {
+        console.log(req.uploadErrors)
+    }
+    let id = req.params.id
+    let errorArr = []
+    let validaionErrors = validationResult(req)
+    if (!validaionErrors.isEmpty()) {
+        let errors = Object.values(validaionErrors.mapped())
+        errors.forEach(item => {
+            errorArr.push(item.msg)
+        })
+        req.flash("errors", errorArr)
+        res.redirect(`/category/edit/${id}`)
+    }
 
-    avatarUploadFile(req, res, async (error) => {
-        let id = req.params.id
-        if (req.body.cate_id == "") {
-            req.flash("errors", transCategory.cate_not_empty)
-            res.redirect(`/category/edit/${id}`)
-        } else if (req.body.cate_name == "") {
-            req.flash("errors", transCategory.cate_name_not_empty)
-            res.redirect(`/category/edit/${id}`)
-        } else if (req.body.router == "") {
-            req.flash("errors", transCategory.router_not_empty)
-            res.redirect(`/category/edit/${id}`)
-        } else if (error) {
-            req.flash("errors", transCategory.avatar_type)
-            res.redirect(`/category/edit/${id}`)
-        } else {
-            try {
-                const id = req.params.id;
-                var pathss = '/images/category/' + req.file.filename;
-                let item = {
-                    cate_id: req.body.cate_id,
-                    cate_name:req.body.cate_name,
-                    router: req.body.router,
-                    avatar: pathss,
-                    lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
-                }
-
-                await CategoryModel.updateItem(id, item)
-                // update moi dung thoi
-                //fs.remove(`./src/public/images/category/${req.file.filename}`)
-                req.flash("success", "Edit thành công")
-                res.redirect('/category')
-
-            } catch (error) {
-                req.flash("errors", transCategory.cate_avatar_not_empty)
-                res.redirect(`/category/edit/${id}`)
-            }
+    try {
+        
+        let pathss = '/images/category/' + req.file.filename;
+        let item = {
+            vehicle_id: (req.body.vehicle_id).match(/^[0-9a-fA-F]{24}$/),
+            cate_name: req.body.cate_name,
+            router: req.body.router,
+            avatar: pathss,
+            lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
         }
 
+        await CategoryModel.updateItem(id,item)
+        // update moi dung thoi
+        //fs.remove(`./src/public/images/category/${req.file.filename}`)
+        req.flash("success", "Sửa danh mục thành công")
+        return res.redirect('/category')
 
-    })
+    } catch (error) {
+        errorArr.push(error)
+        req.flash("errors", errorArr)
+
+    }
+  
 
 }
 

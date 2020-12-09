@@ -1,12 +1,37 @@
 const VehicleModel = require("./../../models/vehicleModel")
+const ReportModel = require("./../../models/reportModels")
 const { transVehicle } = require("./../../../lang/vi")
-let getVehicle = async (req, res) => {
-    let Vehicle = await VehicleModel.listAll()
-    vehicle = JSON.parse(JSON.stringify(Vehicle))
-    return res.render('admin/vehicles/vehicle', {
-        success: req.flash("success"),
-        errors: req.flash("errors"),
-        vehicle: vehicle
+const { validationResult } = require("express-validator/check")
+let getVehicle = (req, res) => {
+    return new Promise(async (resolve, reject) => {
+        let Report = await ReportModel.aggregate([{
+            $group: {
+                _id: '$vehicle_id',
+                "ratingAvg": { "$avg": "$star" }
+            }
+        }])
+        Report = JSON.parse(JSON.stringify(Report))
+
+        let Vehicle = await VehicleModel.listAll()
+        Vehicle = JSON.parse(JSON.stringify(Vehicle))
+        Vehicle.forEach(x => {
+            Report.forEach(async (item) => {
+                let id
+                if (item._id == x._id) {
+                    id = x._id
+                }
+                let c = {
+                    StarVehicle: item.ratingAvg
+                }
+                await VehicleModel.findVehicleByIdAndUpdate(id, c)
+            })
+        })
+        return res.render('admin/vehicles/vehicle', {
+            success: req.flash("success"),
+            errors: req.flash("errors"),
+            Vehicle: Vehicle,
+            Report: Report
+        })
     })
 }
 let getRemoveVehicle = async (req, res) => {
@@ -23,18 +48,26 @@ let getAddVehicle = (req, res) => {
     })
 }
 let postAddVehicle = async (req, res) => {
-
-    if (req.body.vehicle_name == "") {
-        req.flash("errors", transVehicle.vehicle_not_empty)
+    let errorArr = []
+    let validaionErrors = validationResult(req)
+    if (!validaionErrors.isEmpty()) {
+        let errors = Object.values(validaionErrors.mapped())
+        errors.forEach(item => {
+            errorArr.push(item.msg)
+        })
+        req.flash("errors", errorArr)
         res.redirect('/vehicle/add')
-    } else {
+    }
+    try {
         let item = {
             vehicle_name: req.body.vehicle_name
         }
         await VehicleModel.createNew(item)
         req.flash("success", transVehicle.createSuccess)
         res.redirect('/vehicle')
-
+    } catch (error) {
+        errorArr.push(error)
+        req.flash("errors", errorArr)
     }
 }
 let getEdit = async (req, res) => {
@@ -48,19 +81,31 @@ let getEdit = async (req, res) => {
     })
 }
 let postEdit = async (req, res) => {
-
-    if (req.body.vehicle_name == "") {
-        req.flash("errors", transVehicle.vehicle_not_empty)
+    let errorArr = []
+    let id = req.params.id
+    let validaionErrors = validationResult(req)
+    if (!validaionErrors.isEmpty()) {
+        let errors = Object.values(validaionErrors.mapped())
+        errors.forEach(item => {
+            errorArr.push(item.msg)
+        })
+        req.flash("errors", errorArr)
         res.redirect(`/vehicle/edit/${id}`)
-    } else {
-        let id = req.params.id
+    }
+    try {
         let item = {
             vehicle_name: req.body.vehicle_name
         }
         await VehicleModel.findVehicleByIdAndUpdate(id, item)
-        req.flash("success", transVehicle.editSuccess)
+        req.flash("success", "Sửa thành công")
         res.redirect('/vehicle')
+    } catch (error) {
+        errorArr.push(error)
+        req.flash("errors", errorArr)
     }
+
+
+
 
 }
 module.exports = {

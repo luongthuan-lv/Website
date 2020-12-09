@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const VehicleModel = new Schema({
     vehicle_name: String,
+    StarVehicle: Number,
     created_at: {type: Number, default: Date.now},
     deleted_at: {type: Number, default: null}
 });
