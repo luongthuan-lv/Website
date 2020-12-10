@@ -50,7 +50,7 @@ let postAddReport = async (req,res) => {
     
                 var pathss = '/images/report/' + req.file.filename;
                 let item = {
-                    vehicle_id: (req.body.vehicle_id).match(/^[0-9a-fA-F]{24}$/),
+                    vehicle_id: req.body.vehicle_id,
                     user: req.body.user,
                     username: req.body.username,
                     star: req.body.star,

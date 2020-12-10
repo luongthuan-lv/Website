@@ -8,7 +8,7 @@ const ReportModel = new Schema({
     report: String,
     avatar: { type: String, default: null },
     vehicle_id: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         ref: 'vehicles'
     },
     star: { type: Number, default: null },
