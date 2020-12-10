@@ -6,6 +6,7 @@ const ReportModel = new Schema({
     user: String,
     username:String,
     report: String,
+    avatar: { type: String, default: null },
     vehicle_id: {
         type: mongoose.Types.ObjectId,
         ref: 'vehicles'
