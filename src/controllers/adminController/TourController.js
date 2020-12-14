@@ -70,14 +70,14 @@ let postAddTour = async (req, res) => {
     }
     let errorArr = []
     let validaionErrors = validationResult(req)
-    if (!validaionErrors.isEmpty()) {
-        let errors = Object.values(validaionErrors.mapped())
-        errors.forEach(item => {
-            errorArr.push(item.msg)
-        })
-        req.flash("errors", errorArr)
-        res.redirect('/tour/add')
-    }
+    // if (!validaionErrors.isEmpty()) {
+    //     let errors = Object.values(validaionErrors.mapped())
+    //     errors.forEach(item => {
+    //         errorArr.push(item.msg)
+    //     })
+    //     req.flash("errors", errorArr)
+    //     res.redirect('/tour/add')
+    // }
     try {
         let list_picture = req.files.map(item => {
             return '/images/tour/' + item.filename;
@@ -125,16 +125,16 @@ let posteditTour = async (req,res) => {
     }
     let errorArr = []
     let validaionErrors = validationResult(req)
-    if (!validaionErrors.isEmpty()) {
-        let errors = Object.values(validaionErrors.mapped())
-        errors.forEach(item => {
-            errorArr.push(item.msg)
-        })
-        req.flash("errors", errorArr)
-        res.redirect(`/tour/edit/${id}`)
-    }
+    // if (!validaionErrors.isEmpty()) {
+    //     let errors = Object.values(validaionErrors.mapped())
+    //     errors.forEach(item => {
+    //         errorArr.push(item.msg)
+    //     })
+    //     req.flash("errors", errorArr)
+    //     res.redirect(`/tour/edit/${id}`)
+    // }
     try {
-        let list_picture = req.files.map(item => {
+        let list_picture = req.files.map(item=> {
             return '/images/tour/' + item.filename;
         })
      
