@@ -1,4 +1,48 @@
 <%- include('../header') %>
+<style>
+    .dropbtn {
+        background-color: dodgerblue;
+        color: white;
+        padding: 6px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-left: 1rem;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 225px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 14px 20px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+</style>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="row">
         <ol class="breadcrumb">
@@ -20,6 +64,15 @@
         <a href="/tour/add" class="btn btn-success">
             <i class="glyphicon glyphicon-plus"></i> Thêm địa điểm
         </a>
+
+        <div class="dropdown">
+            <button class="dropbtn">Lọc địa điểm theo tour </button>
+            <div class="dropdown-content">
+                <% Vehicle.forEach(item => { %>
+                <a href="/tour/?keyy=<%=item.vehicle_name%>"><%=item.vehicle_name %> </a>
+                <% }) %>
+            </div>
+        </div>
     </div>
     <br><br>
     <div class="row">
@@ -37,11 +90,11 @@
                         <thead>
                             <tr>
                                 <th data-field="id" data-sortable="true" style="text-align: center">ID</th>
-                            
+
                                 <th data-field="price" data-sortable="true" style="text-align: center">Place</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Longitude</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Latitude</th>
-                              
+
                                 <th data-field="price" data-sortable="true" style="text-align: center">Avatar</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Language</th>
                                 <th data-field="price" data-sortable="true" style="text-align: center">Vehicle</th>
@@ -51,10 +104,11 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% if(!list){ %>
                             <% tour.forEach(item => { %>
                             <tr>
                                 <td style="text-align: center"><%=item._id %> </td>
-                          
+
                                 <td style="text-align: center"><%=item.place  %> </td>
                                 <td style="text-align: center"><%=item.location.lon  %> </td>
                                 <td style="text-align: center"><%=item.location.lat  %> </td>
@@ -64,12 +118,12 @@
                                     <% }) %>
                                 </td>
                                 <% item.languages.forEach(i => { %>
-                                    <td style="text-align: center"><%=i.lang_name  %> </td>
-                                <% }) %> 
+                                <td style="text-align: center"><%=i.lang_name  %> </td>
+                                <% }) %>
                                 <% item.vehicles.forEach(i => { %>
-                                    <td style="text-align: center"><%=i.vehicle_name  %> </td>
-                                <% }) %> 
-                
+                                <td style="text-align: center"><%=i.vehicle_name  %> </td>
+                                <% }) %>
+
                                 <td style="text-align: center"><%=item.way  %> </td>
                                 <td class="form-group" style="text-align: center">
                                     <a href="/tour/edit/<%=item._id %> " class="btn btn-primary"><i
@@ -80,14 +134,46 @@
                                 </td>
                             </tr>
                             <% })%>
+                            <% }else{ %>
+                            <% list.forEach(item => { %>
+                            <tr>
+                                <td style="text-align: center"><%=item._id %> </td>
+
+                                <td style="text-align: center"><%=item.place  %> </td>
+                                <td style="text-align: center"><%=item.location.lon  %> </td>
+                                <td style="text-align: center"><%=item.location.lat  %> </td>
+                                <td style="text-align: center">
+                                    <% item.avatar.forEach(i => { %>
+                                    <img src="<%=i%>" alt="" height="100" width="100">
+                                    <% }) %>
+                                </td>
+                                <% item.languages.forEach(i => { %>
+                                <td style="text-align: center"><%=i.lang_name  %> </td>
+                                <% }) %>
+                                <% item.vehicles.forEach(i => { %>
+                                <td style="text-align: center"><%=i.vehicle_name  %> </td>
+                                <% }) %>
+
+                                <td style="text-align: center"><%=item.way  %> </td>
+                                <td class="form-group" style="text-align: center">
+                                    <a href="/tour/edit/<%=item._id %> " class="btn btn-primary"><i
+                                            class="glyphicon glyphicon-pencil"></i></a>
+                                    <a href="/tour/remove/<%=item._id %> " class="btn btn-danger"
+                                        onclick="return alert('Bạn có muốn xóa không!')"><i
+                                            class="glyphicon glyphicon-remove"></i></a>
+                                </td>
+                            </tr>
+                            <% })%>
+                            <%} %>
+
                         </tbody>
                     </table>
                 </div>
                 <div class="panel-footer">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link"
-                                    href="/tour/?page=<%=data.pagePrev%>">&laquo;</a></li>
+                            <li class="page-item"><a class="page-link" href="/tour/?page=<%=data.pagePrev%>">&laquo;</a>
+                            </li>
                             <%for(var i = 1; i <= data.totalPage; i++) {%>
                             <li class="page-item"><a class="page-link" href="/tour/?page=<%=i%>"><%=i%></a></li>
                             <%}%>

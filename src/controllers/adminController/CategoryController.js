@@ -39,7 +39,7 @@ let getCategory = (req, res) => {
         cate = JSON.parse(JSON.stringify(Cate))
         cate.forEach(item => {
             let id = item._id
-            item.vehicles.forEach(async (o) => {
+            item.vehicles.forEach(async (o) => { 
                 let x = {
                     starCate: o.StarVehicle
                 }

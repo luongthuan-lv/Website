@@ -45,6 +45,8 @@ let initRouter = (app) => {
     router.get('/language/remove/:id', logout.checkLoggedIn , Lang.getRemoveLanguage)
     router.get('/language/add', logout.checkLoggedIn , Lang.getAddLanguage)
     router.post('/language/add/post', logout.checkLoggedIn , Lang.postAddLanguage)
+    router.get('/language/edit/:id', logout.checkLoggedIn, Lang.getEditLanguage)
+    router.post('/language/edit/:id', logout.checkLoggedIn, Lang.postEditLanguage)
     //------------------Tour-------------------
     router.get('/tour',  logout.checkLoggedIn ,Tour.getTour)
     router.get('/tour/remove/:id', logout.checkLoggedIn , Tour.getRemoveTour)

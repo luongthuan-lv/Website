@@ -4,43 +4,57 @@ const CategoryModel = require("./../../models/categoryModel")
 const LanguageModel = require("./../../models/languageModel")
 const VehicleModel = require("./../../models/vehicleModel")
 const { validationResult } = require("express-validator/check")
-let getTour = async (req, res) => {
-    let page = parseInt(req.query.page) || 1
-    let perpage = 9
-    let perRow = page * perpage - perpage
+let getTour = (req, res) => {
+    return new Promise(async (resolve, reject) => {
+        let page = parseInt(req.query.page) || 1
+        let perpage = 9
+        let perRow = page * perpage - perpage
 
-    let productAll = await TourModel.find()
-    let totalPage = Math.ceil(productAll.length / perpage)
+        let productAll = await TourModel.find()
+        let totalPage = Math.ceil(productAll.length / perpage)
 
-    let pagePrev, pageNext
-    // pagePrev
-    if (page - 1 <= 0) {
-        pagePrev = 1
-    } else {
-        pageNext = page - 1
-    }
-    // pageNext
-    if (page + 1 >= totalPage) {
-        pageNext = totalPage
-    } else {
-        pageNext = page + 1
-    }
-
-
-    let tour = await TourModel.find().skip(perRow).limit(perpage).populate("vehicles").populate("languages").exec()
-    tour = JSON.parse(JSON.stringify(tour))
+        let pagePrev, pageNext
+        // pagePrev
+        if (page - 1 <= 0) {
+            pagePrev = 1
+        } else {
+            pageNext = page - 1
+        }
+        // pageNext
+        if (page + 1 >= totalPage) {
+            pageNext = totalPage
+        } else {
+            pageNext = page + 1
+        }
 
 
-    let Vehicle = await VehicleModel.find()
-    Vehicle = JSON.parse(JSON.stringify(Vehicle))
+        let tour = await TourModel.find().skip(perRow).limit(perpage).populate("vehicles").populate("languages").exec()
+        tour = JSON.parse(JSON.stringify(tour))
+        let Vehicle = await VehicleModel.find()
+        Vehicle = JSON.parse(JSON.stringify(Vehicle))
+        let la = await LanguageModel.find()
+        la = JSON.parse(JSON.stringify(la))
+        // search key = language
 
-    return res.render("admin/tour/tour", {
-        success: req.flash("success"),
-        errors: req.flash("errors"),
-        tour: tour,
-        data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage },
-        Vehicle: Vehicle,
+        if (req.query.keyy) {
+            let y = await VehicleModel.findOne().where({ vehicle_name: req.query.keyy }).exec()
+            y = JSON.parse(JSON.stringify(y))
+            var item = await TourModel.find().skip(perRow).limit(perpage).populate("categories").populate("languages").populate("vehicles").where({
+                    vehicle_id: y._id 
+        }).exec()
+            var list = JSON.parse(JSON.stringify(item))
+        }
+        // search key = vehicle
 
+        return res.render("admin/tour/tour", {
+            success: req.flash("success"),
+            errors: req.flash("errors"),
+            tour: tour,
+            data: { pageNext: pageNext, pagePrev: pagePrev, totalPage: totalPage },
+            Vehicle: Vehicle,
+            la: la,
+            list: list
+        })
     })
 }
 let getRemoveTour = async (req, res) => {
@@ -95,7 +109,7 @@ let postAddTour = async (req, res) => {
             vehicle_id: (req.body.cate_id).match(/^[0-9a-fA-F]{24}$/)
         }
         await TourModel.createNew(item)
-        req.flash("success", "Tạo tour mới thành công")
+        req.flash("success", "Tạo địa điểm mới thành công")
         return res.redirect('/tour')
     } catch (error) {
         errorArr.push(error)
@@ -104,8 +118,8 @@ let postAddTour = async (req, res) => {
 }
 let geteditTour = async (req, res) => {
     let id = req.params.id
-    let Tour = await TourModel.findById({_id:id})
-        item = JSON.parse(JSON.stringify(Tour))
+    let Tour = await TourModel.findById({ _id: id })
+    item = JSON.parse(JSON.stringify(Tour))
     let la = await LanguageModel.listAll()
     la = JSON.parse(JSON.stringify(la))
     let Vehicle = await VehicleModel.find()
@@ -118,26 +132,26 @@ let geteditTour = async (req, res) => {
         Vehicle: Vehicle
     })
 }
-let posteditTour = async (req,res) => {
+let posteditTour = async (req, res) => {
     let id = req.params.id
     if (req.uploadErrors) {
         console.log(req.uploadErrors)
     }
     let errorArr = []
     let validaionErrors = validationResult(req)
-    // if (!validaionErrors.isEmpty()) {
-    //     let errors = Object.values(validaionErrors.mapped())
-    //     errors.forEach(item => {
-    //         errorArr.push(item.msg)
-    //     })
-    //     req.flash("errors", errorArr)
-    //     res.redirect(`/tour/edit/${id}`)
-    // }
+    if (!validaionErrors.isEmpty()) {
+        let errors = Object.values(validaionErrors.mapped())
+        errors.forEach(item => {
+            errorArr.push(item.msg)
+        })
+        req.flash("errors", errorArr)
+        res.redirect(`/tour/edit/${id}`)
+    }
     try {
-        let list_picture = req.files.map(item=> {
+        let list_picture = req.files.map(item => {
             return '/images/tour/' + item.filename;
         })
-     
+
         let item = {
             place: req.body.place,
             location: {
@@ -150,7 +164,7 @@ let posteditTour = async (req,res) => {
             lang_id: (req.body.lang_id).match(/^[0-9a-fA-F]{24}$/),
             vehicle_id: (req.body.cate_id).match(/^[0-9a-fA-F]{24}$/)
         }
-        await TourModel.findVehicleByIdAndUpdate(id,item)
+        await TourModel.findVehicleByIdAndUpdate(id, item)
         req.flash("success", "Edit tour thành công")
         return res.redirect('/tour')
     } catch (error) {
