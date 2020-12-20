@@ -12,7 +12,8 @@ const ReportModel = new Schema({
         ref: 'vehicles'
     },
     star: { type: Number, default: null },
-    date: { type: Number, default: Date.now }
+    //date: { type: Number, default: Date.now }
+    date: String,
 }, {
     toJSON: { virtuals: true },
     //toObject: { virtuals: true }
